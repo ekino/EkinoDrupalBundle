@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+
+        <!-- Form Widget-->
+        <service id="ekino.drupal" class="Ekino\Bundle\DrupalBundle\Drupal\Drupal">
+            <argument />
+        </service>
+
+        <service id="ekino.drupal.request_listener" class="Ekino\Bundle\DrupalBundle\Drupal\DrupalRequestListener">
+            <tag name="kernel.event_listener" event="kernel.request" method="onKernelRequest" />
+
+            <argument type="service" id="ekino.drupal" />
+            <argument />
+        </service>
+
+        <service id="ekino.drupal.session" class="Ekino\Bundle\DrupalBundle\Port\DrupalSessionStorage">
+            <argument type="service" id="ekino.drupal" />
+        </service>
+
+        <service id="ekino.drupal.delivery_strategy.drupal" class="Ekino\Bundle\DrupalBundle\Delivery\FullDrupalDeliveryStrategy" />
+
+        <service id="ekino.drupal.delivery_strategy.symfony" class="Ekino\Bundle\DrupalBundle\Delivery\FullSymfonyDeliveryStrategy" />
+
+    </services>
+
+</container>

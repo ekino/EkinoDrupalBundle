@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Ekino Drupal package.
+ *
+ * (c) 2011 Ekino
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Ekino\Bundle\DrupalBundle\Drupal;
 
 use Symfony\Component\HttpFoundation\Request;
@@ -11,6 +20,8 @@ use Symfony\Component\HttpFoundation\Response;
  * drupal response into the symfony framework
  *
  * The class is statefull
+ *
+ * @author Thomas Rabaix <thomas.rabaix@ekino.com>
  */
 final class Drupal
 {
@@ -322,7 +333,7 @@ final class Drupal
 
         // Deliver the result of the page callback to the browser, or if requested,
         // return it raw, so calling code can do more processing.
-        $content = $this->encapsulate(function(Drupal $drupal) {
+        $content = $this->encapsulate(function(DrupalInterface $drupal) {
             $routerItem = $drupal->getRouterItem();
             $defaultDeliveryCallback = $routerItem ? $routerItem['delivery_callback'] : NULL;
 

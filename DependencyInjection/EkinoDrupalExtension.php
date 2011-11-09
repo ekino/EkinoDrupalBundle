@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Ekino Drupal package.
+ *
+ * (c) 2011 Ekino
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Ekino\Bundle\DrupalBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
@@ -13,7 +22,7 @@ use Symfony\Component\Finder\Finder;
 use Symfony\Component\Config\Definition\Processor;
 
 /**
- *
+ * @author Thomas Rabaix <thomas.rabaix@ekino.com>
  */
 class EkinoDrupalExtension extends Extension
 {

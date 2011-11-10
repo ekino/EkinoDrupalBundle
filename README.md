@@ -28,6 +28,7 @@ This file "share" the container with Drupal so it is possible to reuse Symfony2'
 initialization process is always handled by Symdony2.
 
 ``` php
+<?php
 require_once __DIR__.'/../app/bootstrap.php.cache';
 require_once __DIR__.'/../app/AppKernel.php';
 //require_once __DIR__.'/../app/bootstrap_cache.php.cache';
@@ -73,6 +74,7 @@ Usage
 Symfony components can be used from within drupal :
 
 ``` php
+<?php
 function drupal_foo_function() {
     global $container;
 

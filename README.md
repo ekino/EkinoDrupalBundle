@@ -25,7 +25,7 @@ The ``web`` directory must be the document root and contains the drupal source c
 ### Update the ``index.php`` file
 
 This file "share" the container with Drupal so it is possible to reuse Symfony2's services from within Drupal. The
-initialization process is always handled by Symdony2.
+initialization process is always handled by Symfony2.
 
 ``` php
 <?php
@@ -66,7 +66,7 @@ Edit the symfony ``config.yml`` file and add the following lines :
 The bundle comes with 2 delivery strategies :
 
 * ekino.drupal.delivery_strategy.symfony : Drupal returns the response only if the page is not 404
-* ekino.drupal.delivery_strategy.drupal  : Drupal always returns the response, event if the page is 404
+* ekino.drupal.delivery_strategy.drupal  : Drupal always returns the response, even if the page is 404
 
 Usage
 -----
@@ -89,5 +89,5 @@ Limitations
 
 * It is not possible to use Symfony native class to manage session as drupal initializes its own session handler
 and there is no way to change this.
-* requests must be server through the index.php as it is the default value in the .htaccess file and there is no
+* requests must be served through the index.php as it is the default value in the .htaccess file and there is no
 way to change the default script in drupal

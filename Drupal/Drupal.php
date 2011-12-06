@@ -23,7 +23,7 @@ use Symfony\Component\HttpFoundation\Response;
  *
  * @author Thomas Rabaix <thomas.rabaix@ekino.com>
  */
-final class Drupal
+final class Drupal implements DrupalInterface
 {
 
     const STATE_FRESH           = 0; // the drupal instance is not initialized

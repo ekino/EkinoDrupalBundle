@@ -12,7 +12,7 @@
         </service>
 
         <service id="ekino.drupal.request_listener" class="Ekino\Bundle\DrupalBundle\Drupal\DrupalRequestListener">
-            <tag name="kernel.event_listener" event="kernel.request" method="onKernelRequest" />
+            <tag name="kernel.event_listener" event="kernel.request" method="onKernelRequest" priority="64"/>
 
             <argument type="service" id="ekino.drupal" />
             <argument />

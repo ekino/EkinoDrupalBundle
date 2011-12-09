@@ -269,12 +269,6 @@ final class Drupal implements DrupalInterface
      */
     public function defineState(Request $request)
     {
-        $_GET['q'] = substr($request->getPathInfo(), 1);
-
-        if (!$_GET['q']) {
-            $_GET['q'] = 'node';
-        }
-
         $this->initialize();
 
         // Check if site is offline.

@@ -63,10 +63,33 @@ Edit the symfony ``config.yml`` file and add the following lines :
         root:         %kernel.root_dir%/../web
         strategy_id:  ekino.drupal.delivery_strategy.symfony
 
+    # declare 2 required mapping definition used by drupal
+    doctrine:
+        dbal:
+            default_connection: default
+            connections:
+                default:
+                    driver:   %database_driver%
+                    dbname:   %database_name%
+                    user:     %database_user%
+                    host:     %database_host%
+                    password: %database_password%
+
+                    mapping_types:
+                        longblob: object
+                        blob: object
+
 The bundle comes with 2 delivery strategies :
 
 * ekino.drupal.delivery_strategy.symfony : Drupal returns the response only if the page is not 404
 * ekino.drupal.delivery_strategy.drupal  : Drupal always returns the response, even if the page is 404
+
+Update Queries
+--------------
+
+``` sql
+UPDATE users SET `email_canonical` = `mail`, `username_canonical` = `name`
+```
 
 Usage
 -----

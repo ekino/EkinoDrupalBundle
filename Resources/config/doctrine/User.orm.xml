@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                  http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <entity name="Ekino\Bundle\DrupalBundle\Entity\User" table="users">
+
+        <id name="id" column="uid" column-definition="int(10) unsigned" type="integer">
+            <generator strategy="AUTO" />
+        </id>
+
+        <field name="theme"        type="string"        column="theme" default=""/>
+        <field name="signature"    type="string"        column="signature"  default=""/>
+        <field name="signatureFormat"    type="string"   column="signature_format" nullable="true" default="NULL"/>
+
+        <field name="created"      type="datetime"      column="created"  default="0"/>
+        <field name="access"       type="datetime"      column="access"  default="0"/>
+        <field name="login"        type="integer"      column-definition="int(10) unsigned" column="login" default="0" />
+        <field name="status"       type="integer"       column="status" length="4"  default="0"/>
+        <field name="timezone"     type="string"        column="timezone" length="32" nullable="true" default="NULL"/>
+        <field name="language"     type="string"        column="language" length="12" default="" />
+        <field name="picture"      type="integer"       column="picture"  default="" />
+        <field name="init"         type="string"        column="init"  length="254"  nullable="true"  default="" />
+        <field name="data"         type="text"          column="data"   nullable="true" />
+
+        <indexes>
+            <index name="access"    columns="access"/>
+            <index name="created"   columns="created"/>
+            <index name="mail"      columns="mail"/>
+        </indexes>
+
+    </entity>
+
+</doctrine-mapping>

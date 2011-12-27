@@ -1,6 +1,15 @@
 <?php
 
-namespace Ekino\Bundle\DrupalBundle\Subscriber;
+/*
+ * This file is part of the Ekino Drupal package.
+ *
+ * (c) 2011 Ekino
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Ekino\Bundle\DrupalBundle\Event\Subscriber;
 
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
@@ -63,34 +72,7 @@ class UserSubscriber implements EventSubscriber
             return;
         }
 
-        // customize field
-        $metadata->fieldMappings['username']['columnName'] = 'name';
-        $metadata->fieldMappings['username']['type']       = 'string';
-
-        $metadata->fieldMappings['email']['columnName'] = 'mail';
-        $metadata->fieldMappings['email']['type']       = 'string';
-
-        $metadata->fieldMappings['password']['columnName'] = 'pass';
-        $metadata->fieldMappings['password']['type']       = 'string';
-        $metadata->fieldMappings['password']['length']     = 128;
-
-        $metadata->fieldMappings['username']['columnName'] = 'name';
-        $metadata->fieldMappings['username']['type']       = 'string';
-
-        $metadata->fieldMappings['id']['columnDefinition'] = 'int(10) unsigned NOT NULL DEFAULT \'0\' COMMENT \'Primary Key: Unique user ID.\'';
-
-
-        // add custome indexes
-        $metadata->table['indexes']['name'] = array('columns' => array('name'));
-
-        /**
-         * algorithm => drupal
-         * username , usernameCanonical => name
-         * email, emailCanonical => email
-         * enabled => $array['status'] == 1 ? 'status_activated' : 'status_blocked';
-         * ?? => created
-         * ?? => access
-         */
-
+        // column definition for id field, this declaration does not work with an 'id' field
+        $metadata->fieldMappings['uid']['columnDefinition'] = 'int(10) unsigned NOT NULL DEFAULT \'0\' COMMENT \'Primary Key: Unique user ID.\'';
     }
 }

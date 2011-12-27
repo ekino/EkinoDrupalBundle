@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                  http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <mapped-superclass name="Ekino\Bundle\DrupalBundle\Entity\DrupalUser">
+
+        <field name="name"         type="string"        column="name" default="" length="255"/>
+        <field name="mail"         type="string"        column="mail" default="" length="255"/>
+        <field name="pass"         type="string"        column="pass" default="" length="128"/>
+        <field name="theme"        type="string"        column="theme" default=""/>
+        <field name="signature"    type="string"        column="signature"  default=""/>
+        <field name="signature_format"    type="string"  column="signature_format" nullable="true" default="NULL"/>
+        <field name="created"      type="integer"       column="created"  default="0"/>
+        <field name="access"       type="integer"       column="access"  default="0"/>
+        <field name="login"        type="integer"       column-definition="int(10) unsigned" column="login" default="0" />
+        <field name="status"       type="integer"       column="status" length="4"  default="0"/>
+        <field name="timezone"     type="string"        column="timezone" length="32" nullable="true" default="NULL"/>
+        <field name="language"     type="string"        column="language" length="12" default="" />
+        <field name="picture"      type="integer"       column="picture"  default="" length="11" />
+        <field name="init"         type="string"        column="init"  length="254"  nullable="true"  default="" />
+        <field name="data"         type="text"          column="data"   nullable="true" />
+
+    </mapped-superclass>
+
+</doctrine-mapping>

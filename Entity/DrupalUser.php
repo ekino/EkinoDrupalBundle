@@ -33,17 +33,6 @@ abstract class DrupalUser extends \stdClass
     public $picture;
     public $init;
     public $data;
-    public $roles;
-
-    /**
-     * Returns the roles granted to the user.
-     *
-     * @return Role[] The user roles
-     */
-    public function getRoles()
-    {
-        return $this->roles;
-    }
 
     /**
      * @param $name

@@ -12,20 +12,20 @@
             <field name="email" column="email" type="string" length="255" />
             <field name="password" column="password" type="string" />
         -->
-        <field name="usernameCanonical" column="username_canonical" type="string" length="255" unique="true" />
-        <field name="emailCanonical" column="email_canonical" type="string" length="255" unique="true" />
+        <field name="usernameCanonical" column="usernameCanonical" type="string" length="255" unique="true" />
+        <field name="emailCanonical" column="emailCanonical" type="string" length="255" unique="true" />
         <field name="enabled" column="enabled" type="boolean" />
         <field name="algorithm" column="algorithm" type="string" />
         <field name="salt" column="salt" type="string" />
-        <field name="lastLogin" column="last_login" type="datetime" nullable="true" />
+        <field name="lastLogin" column="lastLogin" type="datetime" nullable="true" />
         <field name="locked" column="locked" type="boolean" />
         <field name="expired" column="expired" type="boolean" />
         <field name="expiresAt" column="expires_at" type="datetime" nullable="true" />
-        <field name="confirmationToken" column="confirmation_token" type="string" nullable="true" />
-        <field name="passwordRequestedAt" column="password_requested_at" type="datetime" nullable="true" />
+        <field name="confirmationToken" column="confirmationToken" type="string" nullable="true" />
+        <field name="passwordRequestedAt" column="passwordRequestedAt" type="datetime" nullable="true" />
         <field name="roles" column="roles" type="array" />
-        <field name="credentialsExpired" column="credentials_expired" type="boolean" />
-        <field name="credentialsExpireAt" column="credentials_expire_at" type="datetime" nullable="true" />
+        <field name="credentialsExpired" column="credentialsExpired" type="boolean" />
+        <field name="credentialsExpireAt" column="credentialsExpireAt" type="datetime" nullable="true" />
 
     </mapped-superclass>
 

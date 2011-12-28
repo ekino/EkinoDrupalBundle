@@ -18,8 +18,8 @@
             <index name="name"      columns="name"/>
 
             <!-- fos user indexes -->
-            <index name="username_canonical"   columns="username_canonical"/>
-            <index name="email_canonical"      columns="email_canonical"/>
+            <index name="usernameCanonical"   columns="usernameCanonical"/>
+            <index name="emailCanonical"      columns="emailCanonical"/>
         </indexes>
 
     </entity>

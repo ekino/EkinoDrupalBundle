@@ -38,8 +38,18 @@ class EkinoDrupalExtension extends Extension
 
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.xml');
+        $loader->load('user_hook.xml');
 
-        $container->getDefinition('ekino.drupal')->replaceArgument(0, $config['root']);
-        $container->getDefinition('ekino.drupal.request_listener')->replaceArgument(1, new Reference($config['strategy_id']));
+        $container->getDefinition('ekino.drupal')
+            ->replaceArgument(0, $config['root'])
+        ;
+
+        $container->getDefinition('ekino.drupal.request_listener')
+            ->replaceArgument(1, new Reference($config['strategy_id']))
+        ;
+
+        $container->getDefinition('ekino.drupal.user_registration_hook')
+            ->replaceArgument(2, $config['provider_keys'])
+        ;
     }
 }

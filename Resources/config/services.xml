@@ -6,13 +6,12 @@
 
     <services>
 
-        <!-- Form Widget-->
         <service id="ekino.drupal" class="Ekino\Bundle\DrupalBundle\Drupal\Drupal">
             <argument />
         </service>
 
         <service id="ekino.drupal.request_listener" class="Ekino\Bundle\DrupalBundle\Drupal\DrupalRequestListener">
-            <tag name="kernel.event_listener" event="kernel.request" method="onKernelRequest" priority="64"/>
+            <tag name="kernel.event_listener" event="kernel.request" method="onKernelRequest" priority="32"/>
 
             <argument type="service" id="ekino.drupal" />
             <argument />
@@ -26,9 +25,24 @@
 
         <service id="ekino.drupal.delivery_strategy.symfony" class="Ekino\Bundle\DrupalBundle\Delivery\FullSymfonyDeliveryStrategy" />
 
-        <service id="ekino.drupal.subscriber.user.orm" class="Ekino\Bundle\DrupalBundle\Subscriber\UserSubscriber">
+        <service id="ekino.drupal.subscriber.user.orm" class="Ekino\Bundle\DrupalBundle\Event\Subscriber\UserSubscriber">
             <tag name="doctrine.event_subscriber" />
         </service>
+
+        <service id="ekino.drupal.subscriber.user.orm" class="Ekino\Bundle\DrupalBundle\Event\Subscriber\UserSubscriber">
+            <tag name="doctrine.event_subscriber" />
+        </service>
+
+        <service id="ekino.drupal.fos_user.user_manager" class="Ekino\Bundle\DrupalBundle\Entity\UserManager" public="false">
+            <argument type="service" id="security.encoder_factory" />
+            <argument>%fos_user.encoder.algorithm%</argument>
+            <argument type="service" id="fos_user.util.username_canonicalizer" />
+            <argument type="service" id="fos_user.util.email_canonicalizer" />
+            <argument type="service" id="fos_user.entity_manager" />
+            <argument>%fos_user.model.user.class%</argument>
+            <argument type="service" id="ekino.drupal" />
+        </service>
+
     </services>
 
 </container>

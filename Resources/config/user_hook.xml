@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+
+        <service id="ekino.drupal.user_registration_hook" class="Ekino\Bundle\DrupalBundle\Event\Listener\UserRegistrationHookListener" scope="request">
+            <tag name="kernel.event_listener" event="drupal.user_login" method="onLogin" priority="64"/>
+            <tag name="kernel.event_listener" event="drupal.user_logout" method="onLogout" priority="64"/>
+
+            <argument type="service" id="logger" />
+            <argument type="service" id="request" />
+            <argument />
+        </service>
+
+        <service id="ekino.drupal.user_entity_hook" class="Ekino\Bundle\DrupalBundle\Event\Listener\UserEntityHookListener">
+            <tag name="kernel.event_listener" event="drupal.user_insert" method="onInsert" priority="64"/>
+            <tag name="kernel.event_listener" event="drupal.user_update" method="onUpdate" priority="64"/>
+            <tag name="kernel.event_listener" event="drupal.user_presave" method="onPreSave" priority="64"/>
+            <tag name="kernel.event_listener" event="drupal.user_load" method="onLoad" priority="64"/>
+
+            <argument type="service" id="fos_user.user_manager" />
+            <argument type="service" id="logger" />
+        </service>
+
+    </services>
+
+</container>

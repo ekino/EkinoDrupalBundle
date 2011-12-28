@@ -35,6 +35,9 @@ class Configuration implements ConfigurationInterface
             ->children()
                 ->scalarNode('root')->isRequired()->end()
                 ->scalarNode('strategy_id')->defaultValue('ekino.drupal.delivery_strategy.symfony')->end()
+                ->arrayNode('provider_keys')
+                    ->prototype('scalar')->cannotBeEmpty()->end()
+                ->end()
             ->end();
 
         return $treeBuilder;

@@ -48,6 +48,10 @@ $container = $kernel->getContainer();
 $kernel->handle(Request::createFromGlobals())->send();
 ```
 
+### Install the related drupal module
+
+The module can be downloaded from the following url : https://github.com/ekino/ekino_drupal_symfony2
+
 ### Configuration
 
 Edit the symfony ``config.yml`` file and add the following lines :
@@ -60,8 +64,10 @@ Edit the symfony ``config.yml`` file and add the following lines :
             storage_id:     ekino.drupal.session
 
     ekino_drupal:
-        root:         %kernel.root_dir%/../web
-        strategy_id:  ekino.drupal.delivery_strategy.symfony
+        root:          %kernel.root_dir%/../web
+        strategy_id:   ekino.drupal.delivery_strategy.symfony
+        # attach a security token to the following provider keys
+        provider_keys: [main, admin]
 
     # declare 2 required mapping definition used by drupal
     doctrine:
@@ -88,7 +94,7 @@ Update Queries
 --------------
 
 ``` sql
-UPDATE users SET `email_canonical` = `mail`, `username_canonical` = `name`
+UPDATE users SET `emailCanonical` = `mail`, `usernameCanonical` = `name`, `roles` = 'b:0;';
 ```
 
 Usage
@@ -99,9 +105,7 @@ Symfony components can be used from within drupal :
 ``` php
 <?php
 function drupal_foo_function() {
-    global $container;
-
-    $result = $container->get('reusage_service')->foo();
+    $result = symfony_service('reusage_service')->foo();
 
     // do some stuff with $result
 }

@@ -62,13 +62,15 @@ abstract class HybridUser extends FosUser
 
     /**
      * @param \stdClass $user
-     * @return void
+     * @return \Symfony\Component\Security\Core\User\UserInterface
      */
     public function fromDrupalUser(\stdClass $user)
     {
         foreach ($user as $property => $value) {
             $this->$property = $value;
         }
+
+        return $this;
     }
 
     /**

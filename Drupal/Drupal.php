@@ -14,6 +14,8 @@ namespace Ekino\Bundle\DrupalBundle\Drupal;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+use FOS\UserBundle\Model\UserManagerInterface;
+
 /**
  *
  * This class control a drupal instance to provide helper to render a
@@ -48,16 +50,20 @@ final class Drupal implements DrupalInterface
 
     protected $disableResponse;
 
+    protected $userManager;
+
     /**
      * @param $root
+     * @param \FOS\UserBundle\Model\UserManagerInterface $userManager
      */
-    public function __construct($root)
+    public function __construct($root, UserManagerInterface $userManager)
     {
         $this->root             = $root;
         $this->state            = self::STATE_FRESH;
         $this->response         = new Response;
         $this->encapsulated     = false;
         $this->disableResponse  = false;
+        $this->userManager      = $userManager;
     }
 
     /**
@@ -89,7 +95,24 @@ final class Drupal implements DrupalInterface
 
         }, $this->root);
 
+        $this->fixAnonymousUser();
         $this->state = self::STATE_INIT;
+    }
+
+    /**
+     * Fix the user, drupal does not provide a hook for anonymous user
+     *
+     * @return
+     */
+    public function fixAnonymousUser()
+    {
+        global $user;
+
+        if (!$user || $user->uid != 0) {
+            return;
+        }
+
+        $user = $this->userManager->createUser()->fromDrupalUser($user);
     }
 
     /**

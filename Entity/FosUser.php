@@ -643,7 +643,7 @@ abstract class FosUser extends DrupalUser implements SecurityUserInterface, FOSU
      *
      * @param \DateTime $date
      */
-    public function setPasswordRequestedAt(\DateTime $date)
+    public function setPasswordRequestedAt(\DateTime $date = null)
     {
         $this->passwordRequestedAt = $date;
     }

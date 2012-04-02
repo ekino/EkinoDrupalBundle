@@ -18,6 +18,16 @@ use Symfony\Component\HttpKernel\Log\LoggerInterface;
  */
 class LoggerWatchdog implements LoggerInterface
 {
+
+    const LOGGER_EMERGENCY  = 0;
+    const LOGGER_ALERT      = 1;
+    const LOGGER_CRITICAL   = 2;
+    const LOGGER_ERROR      = 3;
+    const LOGGER_WARNING    = 4;
+    const LOGGER_NOTICE     = 5;
+    const LOGGER_INFO       = 6;
+    const LOGGER_DEBUG      = 7;
+
     /**
      * @var array
      */
@@ -59,7 +69,7 @@ class LoggerWatchdog implements LoggerInterface
      */
     public function emerg($message, array $context = array())
     {
-        $this->log(WATCHDOG_EMERGENCY, $message, $context);
+        $this->log(self::LOGGER_EMERGENCY, $message, $context);
     }
 
     /**
@@ -67,7 +77,7 @@ class LoggerWatchdog implements LoggerInterface
      */
     public function alert($message, array $context = array())
     {
-        $this->log(WATCHDOG_ALERT, $message, $context);
+        $this->log(self::LOGGER_ALERT, $message, $context);
     }
 
     /**
@@ -75,7 +85,7 @@ class LoggerWatchdog implements LoggerInterface
      */
     public function crit($message, array $context = array())
     {
-        $this->log(WATCHDOG_CRITICAL, $message, $context);
+        $this->log(self::LOGGER_CRITICAL, $message, $context);
     }
 
     /**
@@ -83,7 +93,7 @@ class LoggerWatchdog implements LoggerInterface
      */
     public function err($message, array $context = array())
     {
-        $this->log(WATCHDOG_ERROR, $message, $context);
+        $this->log(self::LOGGER_ERROR, $message, $context);
     }
 
     /**
@@ -91,7 +101,7 @@ class LoggerWatchdog implements LoggerInterface
      */
     public function warn($message, array $context = array())
     {
-        $this->log(WATCHDOG_WARNING, $message, $context);
+        $this->log(self::LOGGER_WARNING, $message, $context);
     }
 
     /**
@@ -99,7 +109,7 @@ class LoggerWatchdog implements LoggerInterface
      */
     public function notice($message, array $context = array())
     {
-        $this->log(WATCHDOG_NOTICE, $message, $context);
+        $this->log(self::LOGGER_NOTICE, $message, $context);
     }
 
     /**
@@ -107,7 +117,7 @@ class LoggerWatchdog implements LoggerInterface
      */
     public function info($message, array $context = array())
     {
-        $this->log(WATCHDOG_INFO, $message, $context);
+        $this->log(self::LOGGER_INFO, $message, $context);
     }
 
     /**
@@ -115,6 +125,6 @@ class LoggerWatchdog implements LoggerInterface
      */
     public function debug($message, array $context = array())
     {
-        $this->log(WATCHDOG_DEBUG, $message, $context);
+        $this->log(self::LOGGER_DEBUG, $message, $context);
     }
 }

@@ -1,7 +1,7 @@
 {
     "name": "ekino/drupal-bundle",
     "type": "symfony-bundle",
-    "description": "ntegrate Symfony2 with Drupal ",
+    "description": "Integrate Symfony2 with Drupal ",
     "keywords": ["components", "drupal"],
     "homepage": "http://friendsofsymfony.github.com",
     "license": "MIT",

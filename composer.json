@@ -3,7 +3,7 @@
     "type": "symfony-bundle",
     "description": "Integrate Symfony2 with Drupal ",
     "keywords": ["components", "drupal"],
-    "homepage": "http://friendsofsymfony.github.com",
+    "homepage": "https://github.com/ekino/EkinoDrupalBundle",
     "license": "MIT",
     "authors": [
         {
@@ -18,5 +18,5 @@
     "autoload": {
         "psr-0": { "Ekino\\Bundle\\DrupalBundle": "" }
     },
-    "target-dir": "Bundle/DrupalBundle"
+    "target-dir": "Ekino/Bundle/DrupalBundle"
 }

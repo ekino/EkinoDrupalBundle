@@ -33,7 +33,7 @@ class LoggerWatchdog implements LoggerInterface
      * @param $message
      * @param array $variables
      */
-    public function log($priority, $message, array $variables = array())
+    protected function log($priority, $message, array $variables = array())
     {
         if (function_exists('watchdog')) {
             watchdog('Symfony2', $message, $variables, $priority);

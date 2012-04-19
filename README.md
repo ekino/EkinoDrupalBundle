@@ -65,6 +65,7 @@ Edit the symfony ``config.yml`` file and add the following lines :
 
     ekino_drupal:
         root:          %kernel.root_dir%/../web
+        logger:        ekino.drupal.logger.watchdog
         strategy_id:   ekino.drupal.delivery_strategy.symfony
         # attach a security token to the following provider keys
         provider_keys: [main, admin]

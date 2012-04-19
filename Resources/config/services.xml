@@ -35,8 +35,6 @@
         </service>
         
         <service id="ekino.drupal.logger.watchdog" class="Ekino\Bundle\DrupalBundle\Log\LoggerWatchdog"/>
-        
-        <service id="logger" parent="ekino.drupal.logger.watchdog" />
 
     </services>
 

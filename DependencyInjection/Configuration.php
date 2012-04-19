@@ -34,6 +34,7 @@ class Configuration implements ConfigurationInterface
             ->addDefaultsIfNotSet()
             ->children()
                 ->scalarNode('root')->isRequired()->end()
+                ->scalarNode('logger')->defaultValue('ekino.drupal.logger.watchdog')->end()
                 ->scalarNode('strategy_id')->defaultValue('ekino.drupal.delivery_strategy.symfony')->end()
                 ->arrayNode('provider_keys')
                     ->prototype('scalar')->cannotBeEmpty()->end()

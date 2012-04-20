@@ -51,5 +51,7 @@ class EkinoDrupalExtension extends Extension
         $container->getDefinition('ekino.drupal.user_registration_hook')
             ->replaceArgument(2, $config['provider_keys'])
         ;
+
+        $container->setAlias('logger', $config['logger']);
     }
 }

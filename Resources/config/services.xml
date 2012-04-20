@@ -33,6 +33,9 @@
         <service id="ekino.drupal.subscriber.user.orm" class="Ekino\Bundle\DrupalBundle\Event\Subscriber\UserSubscriber">
             <tag name="doctrine.event_subscriber" />
         </service>
+        
+        <service id="ekino.drupal.logger.watchdog" class="Ekino\Bundle\DrupalBundle\Log\LoggerWatchdog"/>
+
     </services>
 
 </container>

@@ -48,6 +48,12 @@ $container = $kernel->getContainer();
 $kernel->handle(Request::createFromGlobals())->send();
 ```
 
+### Initialize drush in the Symfony2 console
+
+Having drush initialized in the Symfony2 console makes possible the use of Drupal libraries in Symfony2 command.
+In order to use this feature, you have to replace your ``app/console`` by the one provided in ``Console/console`` of this bundle. 
+
+
 ### Install the related drupal module
 
 The module can be downloaded from the following url : https://github.com/ekino/ekino_drupal_symfony2

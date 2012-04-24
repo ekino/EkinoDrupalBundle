@@ -13,6 +13,7 @@ namespace Ekino\Bundle\DrupalBundle\Drupal;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Bundle\FrameworkBundle\Console\Application;
 
 use FOS\UserBundle\Model\UserManagerInterface;
 

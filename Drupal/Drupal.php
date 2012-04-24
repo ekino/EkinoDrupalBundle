@@ -100,6 +100,34 @@ final class Drupal implements DrupalInterface
     }
 
     /**
+     * Initialize Drush which boostrap Drupal core
+     *
+     * @param \Symfony\Bundle\FrameworkBundle\Console\Application $application
+     */
+    public function initializeDrush(Application $application)
+    {
+        register_shutdown_function(array($this, 'shutdownDrush'), $application);
+
+        $basePath = sprintf('%s/../drush', $this->root);
+
+        require_once $basePath . '/includes/context.inc';
+
+        drush_set_option('root', $this->root);
+
+        require_once $basePath . '/drush.php';
+    }
+
+    /**
+     * This method is used to catch the exit instruction in the script that launch Drush
+     *
+     * @param \Symfony\Bundle\FrameworkBundle\Console\Application $application
+     */
+    public function shutdownDrush(Application $application)
+    {
+        $application->run();
+    }
+
+    /**
      * Fix the user, drupal does not provide a hook for anonymous user
      *
      * @return

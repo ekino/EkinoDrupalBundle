@@ -125,6 +125,7 @@ final class Drupal implements DrupalInterface
         drush_set_option('root', $this->root);
 
         // make sure the default path point to the correct instance
+        $currentDirectory = getcwd();
         chdir($this->root);
 
         $phases = _drush_bootstrap_phases(FALSE, TRUE);
@@ -139,6 +140,8 @@ final class Drupal implements DrupalInterface
         foreach ($phases as $phase) {
             drush_bootstrap_to_phase($phase);
         }
+
+        chdir($currentDirectory);
     }
 
     /**

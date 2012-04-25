@@ -19,4 +19,24 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 class EkinoDrupalBundle extends Bundle
 {
 
+    /**
+    * {@inheritdoc}
+    */
+    public function boot()
+    {
+        if (php_sapi_name() === 'cli') {
+
+            global $container;
+
+            $container = $this->container;
+
+            if (!defined('DRUSH_BASE_PATH')) {
+                define('EKINO_DRUSH_FROM', 'symfony');
+
+                $this->container->get('ekino.drupal')->initializeDrush();
+            } else {
+                define('EKINO_DRUSH_FROM', 'drupal');
+            }
+        }
+    }
 }

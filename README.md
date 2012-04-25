@@ -6,6 +6,8 @@ Drupal Bundle by Ekino
 The bundle tries to deeply integrate Symfony2 with Drupal and Drupal with Symfony2. Of course this is done without
 altering the Drupal's core.
 
+When this bundle is activated, the Symfony2 console will have the Drupal libraries autoloaded. So, it makes possible
+the use of Drupal libraries from your Symfony2 command.
 
 Install
 -------
@@ -47,7 +49,6 @@ $container = $kernel->getContainer();
 
 $kernel->handle(Request::createFromGlobals())->send();
 ```
-
 ### Install the related drupal module
 
 The module can be downloaded from the following url : https://github.com/ekino/ekino_drupal_symfony2

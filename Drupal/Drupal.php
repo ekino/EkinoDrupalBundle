@@ -13,7 +13,6 @@ namespace Ekino\Bundle\DrupalBundle\Drupal;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Bundle\FrameworkBundle\Console\Application;
 
 use FOS\UserBundle\Model\UserManagerInterface;
 
@@ -102,30 +101,44 @@ final class Drupal implements DrupalInterface
 
     /**
      * Initialize Drush which boostrap Drupal core
-     *
-     * @param \Symfony\Bundle\FrameworkBundle\Console\Application $application
      */
-    public function initializeDrush(Application $application)
+    public function initializeDrush()
     {
-        register_shutdown_function(array($this, 'shutdownDrush'), $application);
+        define('DRUSH_BASE_PATH', sprintf('%s/../drush', $this->root));
 
-        $basePath = sprintf('%s/../drush', $this->root);
+        define('DRUSH_REQUEST_TIME', microtime(TRUE));
 
-        require_once $basePath . '/includes/context.inc';
+        require_once DRUSH_BASE_PATH . '/includes/environment.inc';
+        require_once DRUSH_BASE_PATH . '/includes/command.inc';
+        require_once DRUSH_BASE_PATH . '/includes/drush.inc';
+        require_once DRUSH_BASE_PATH . '/includes/backend.inc';
+        require_once DRUSH_BASE_PATH . '/includes/batch.inc';
+        require_once DRUSH_BASE_PATH . '/includes/context.inc';
+        require_once DRUSH_BASE_PATH . '/includes/sitealias.inc';
+
+        $GLOBALS['argv'][0] = 'default';
+
+        drush_set_context('arguments', array('default', 'help'));
+        drush_set_context('argc', $GLOBALS['argc']);
+        drush_set_context('argv', $GLOBALS['argv']);
 
         drush_set_option('root', $this->root);
 
-        require_once $basePath . '/drush.php';
-    }
+        // make sure the default path point to the correct instance
+        chdir($this->root);
 
-    /**
-     * This method is used to catch the exit instruction in the script that launch Drush
-     *
-     * @param \Symfony\Bundle\FrameworkBundle\Console\Application $application
-     */
-    public function shutdownDrush(Application $application)
-    {
-        $application->run();
+        $phases = _drush_bootstrap_phases(FALSE, TRUE);
+        drush_set_context('DRUSH_BOOTSTRAP_PHASE', DRUSH_BOOTSTRAP_NONE);
+
+        // We need some global options processed at this early stage. Namely --debug.
+        _drush_bootstrap_global_options();
+
+        $return = '';
+        $command_found = FALSE;
+
+        foreach ($phases as $phase) {
+            drush_bootstrap_to_phase($phase);
+        }
     }
 
     /**

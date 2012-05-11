@@ -24,7 +24,7 @@ class EkinoDrupalBundle extends Bundle
     */
     public function boot()
     {
-        if (php_sapi_name() === 'cli') {
+        if (php_sapi_name() === 'cli' && !defined('EKINO_DRUSH_FROM')) {
 
             global $container;
 

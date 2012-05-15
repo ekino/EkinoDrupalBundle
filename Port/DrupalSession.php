@@ -11,7 +11,6 @@
 
 namespace Ekino\Bundle\DrupalBundle\Port;
 
-use Ekino\Bundle\DrupalBundle\Drupal\Drupal;
 use Symfony\Component\HttpFoundation\Session;
 
 /**
@@ -261,11 +260,11 @@ class DrupalSession extends Session
 
     public function serialize()
     {
-        return serialize(array($_SESSION, $this->defaultLocale));
+        throw new \LogicException('It\'s Drupal who serialize or unserialize the data session.');
     }
 
     public function unserialize($serialized)
     {
-        list($_SESSION, $this->defaultLocale) = unserialize($serialized);
+        throw new \LogicException('It\'s Drupal who serialize or unserialize the data session.');
     }
 }

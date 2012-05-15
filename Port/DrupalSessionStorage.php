@@ -20,8 +20,6 @@ use Ekino\Bundle\DrupalBundle\Drupal\Drupal;
 class DrupalSessionStorage implements SessionStorageInterface
 {
     protected $drupal;
-    protected $cacheUser;
-
     /**
      * @param \Ekino\Bundle\DrupalBundle\Drupal\Drupal $drupal
      */
@@ -37,15 +35,7 @@ class DrupalSessionStorage implements SessionStorageInterface
      */
     public function start()
     {
-        global $user;
-
         $this->drupal->initialize();
-
-        // cloning
-        $this->cacheUser = new \stdClass();
-        foreach (array('uid','cache','timestamp','access') as $attr) {
-            $this->cacheUser->$attr = $user->$attr;
-        }
     }
 
     /**
@@ -118,15 +108,9 @@ class DrupalSessionStorage implements SessionStorageInterface
      */
     public function write($key, $data)
     {
-        global $user;
-
         $this->drupal->initialize();
 
         $_SESSION[$key] = $data;
-
-        $user = $this->cacheUser;
-
-        _drupal_session_write(session_id(), session_encode());
     }
 
     /**

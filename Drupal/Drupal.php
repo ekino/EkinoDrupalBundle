@@ -378,6 +378,7 @@ final class Drupal implements DrupalInterface
         $this->status = MENU_FOUND;
     }
 
+
     /**
      * Decorate the inner content and render the page
      *
@@ -400,10 +401,9 @@ final class Drupal implements DrupalInterface
             $defaultDeliveryCallback = $routerItem ? $routerItem['delivery_callback'] : NULL;
 
             $pageResultCallback = $drupal->getPageResultCallback();
-            ob_clean();
+
             drupal_deliver_page($pageResultCallback, $defaultDeliveryCallback);
             $drupal->setPageResultCallback($pageResultCallback);
-            return ob_get_clean();
         }, $this);
 
         $this->response->setContent($content);

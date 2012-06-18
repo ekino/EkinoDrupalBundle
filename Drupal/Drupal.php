@@ -100,6 +100,16 @@ final class Drupal implements DrupalInterface
     }
 
     /**
+     * State of initilize.
+     *
+     * @return boolean 
+     */
+    public function isInitialized()
+    {
+        return $this->initialized;
+    }
+
+    /**
      * Initialize Drush which boostrap Drupal core
      */
     public function initializeDrush()

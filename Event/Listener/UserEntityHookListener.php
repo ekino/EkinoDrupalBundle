@@ -103,7 +103,12 @@ class UserEntityHookListener
 
         $account = $event->getEntity();
 
-        $account->emailCanonical    = $account->email;
-        $account->usernameCanonical = $account->name;
+        if (property_exists($account, 'email')) {
+            $account->emailCanonical = $account->email;
+        }
+
+        if (property_exists($account, 'name')) {
+            $account->usernameCanonical = $account->name;
+        }
     }
 }

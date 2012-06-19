@@ -34,6 +34,8 @@ abstract class DrupalUser extends \stdClass
     public $init;
     public $data;
 
+    public $path;
+
     /**
      * @param $name
      * @return mixed

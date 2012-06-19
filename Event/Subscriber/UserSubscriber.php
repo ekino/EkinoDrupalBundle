@@ -74,5 +74,16 @@ class UserSubscriber implements EventSubscriber
 
         // column definition for id field, this declaration does not work with an 'id' field
         $metadata->fieldMappings['uid']['columnDefinition'] = 'int(10) unsigned NOT NULL DEFAULT \'0\' COMMENT \'Primary Key: Unique user ID.\'';
+
+        // force value to be nullable
+        $metadata->fieldMappings['usernameCanonical']['nullable'] = true;
+        $metadata->fieldMappings['emailCanonical']['nullable'] = true;
+        $metadata->fieldMappings['enabled']['nullable'] = true;
+        $metadata->fieldMappings['algorithm']['nullable'] = true;
+        $metadata->fieldMappings['salt']['nullable'] = true;
+        $metadata->fieldMappings['locked']['nullable'] = true;
+        $metadata->fieldMappings['expired']['nullable'] = true;
+        $metadata->fieldMappings['roles']['nullable'] = true;
+        $metadata->fieldMappings['credentialsExpired']['nullable'] = true;
     }
 }

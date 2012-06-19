@@ -59,7 +59,7 @@ class DrupalSession extends Session
     {
         $this->start();
 
-        return isset($_SESSION['_symfony2']['attributes'][$name]);
+        return $this->hasSessionVar('attributes', $name);
     }
 
     /**
@@ -74,7 +74,7 @@ class DrupalSession extends Session
      */
     public function get($name, $default = null)
     {
-        return $this->has($name) ? $_SESSION['_symfony2']['attributes'][$name] : $default;
+        return $this->getSessionVar($default, 'attributes', $name);
     }
 
     /**
@@ -101,7 +101,7 @@ class DrupalSession extends Session
      */
     public function all()
     {
-        return $_SESSION['_symfony2']['attributes'];
+        return $this->getSessionVar(array(), 'attributes');
     }
 
     /**
@@ -156,7 +156,7 @@ class DrupalSession extends Session
     {
         $this->start();
 
-        return $_SESSION['_symfony2']['locale'];
+        return $this->getSessionVar($this->locale, 'locale');
     }
 
     /**
@@ -178,7 +178,7 @@ class DrupalSession extends Session
      */
     public function getFlashes()
     {
-        return $_SESSION['_symfony2']['flashes'];
+        return $this->getSessionVar('flashes');
     }
 
     /**
@@ -204,7 +204,7 @@ class DrupalSession extends Session
      */
     public function getFlash($name, $default = null)
     {
-        return isset($_SESSION['_symfony2']['flashes'][$name]) ? $_SESSION['_symfony2']['flashes'][$name] : $default;
+        return $this->getSessionVar($default, 'flashes', $name);
     }
 
     /**
@@ -232,7 +232,7 @@ class DrupalSession extends Session
     {
         $this->start();
 
-        return isset($_SESSION['_symfony2']['flashes'][$name]);
+        return $this->hasSessionVar('flashes', $name);
     }
 
     /**
@@ -266,5 +266,58 @@ class DrupalSession extends Session
     public function unserialize($serialized)
     {
         throw new \LogicException('It\'s Drupal who serialize or unserialize the data session.');
+    }
+
+    /**
+     * Get a session var
+     *
+     * @param $default
+     *
+     * @return null
+     */
+    protected function getSessionVar($default)
+    {
+        if (!isset($_SESSION['_symfony2'])) {
+            return $default;
+        }
+
+        $session = $_SESSION['_symfony2'];
+        $args    = func_get_args();
+
+        array_shift($args);
+
+        foreach ($args as $arg) {
+            if (!isset($session[$arg])) {
+                return $default;
+            }
+
+            $session = $session[$arg];
+        }
+
+        return $session;
+    }
+
+    /**
+     * Verify if a session var exists
+     *
+     * @return bool
+     */
+    protected function hasSessionVar()
+    {
+        if (!isset($_SESSION['_symfony2'])) {
+            return false;
+        }
+
+        $session = $_SESSION['_symfony2'];
+
+        foreach (func_get_args() as $arg) {
+            if (!isset($session[$arg])) {
+                return false;
+            }
+
+            $session = $session[$arg];
+        }
+
+        return true;
     }
 }

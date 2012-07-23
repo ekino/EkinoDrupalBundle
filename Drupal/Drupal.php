@@ -25,7 +25,7 @@ use FOS\UserBundle\Model\UserManagerInterface;
  *
  * @author Thomas Rabaix <thomas.rabaix@ekino.com>
  */
-final class Drupal implements DrupalInterface
+class Drupal implements DrupalInterface
 {
 
     const STATE_FRESH           = 0; // the drupal instance is not initialized

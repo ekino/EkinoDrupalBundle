@@ -6,10 +6,11 @@
 
     <parameters>
         <parameter key="session.class">Ekino\Bundle\DrupalBundle\Port\DrupalSession</parameter>
+        <parameter key="ekino.drupal.drupal.class">Ekino\Bundle\DrupalBundle\Drupal\Drupal</parameter>
     </parameters>
 
     <services>
-        <service id="ekino.drupal" class="Ekino\Bundle\DrupalBundle\Drupal\Drupal">
+        <service id="ekino.drupal" class="%ekino.drupal.drupal.class%">
             <argument />
             <argument type="service" id="fos_user.user_manager" />
         </service>

@@ -217,7 +217,7 @@ class Drupal implements DrupalInterface
      *
      * @return string
      */
-    private function encapsulate()
+    protected function encapsulate()
     {
         $this->encapsulated = true;
         $args = func_get_args();
@@ -241,7 +241,7 @@ class Drupal implements DrupalInterface
     /**
      * @return array
      */
-    private function cleanHeaders()
+    protected function cleanHeaders()
     {
         $headers = array();
         foreach(headers_list() as $header) {

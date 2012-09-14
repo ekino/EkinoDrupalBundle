@@ -118,6 +118,7 @@ final class Drupal implements DrupalInterface
 
         define('DRUSH_REQUEST_TIME', microtime(TRUE));
 
+        require_once DRUSH_BASE_PATH . '/includes/bootstrap.inc';
         require_once DRUSH_BASE_PATH . '/includes/environment.inc';
         require_once DRUSH_BASE_PATH . '/includes/command.inc';
         require_once DRUSH_BASE_PATH . '/includes/drush.inc';
@@ -125,6 +126,19 @@ final class Drupal implements DrupalInterface
         require_once DRUSH_BASE_PATH . '/includes/batch.inc';
         require_once DRUSH_BASE_PATH . '/includes/context.inc';
         require_once DRUSH_BASE_PATH . '/includes/sitealias.inc';
+        require_once DRUSH_BASE_PATH . '/includes/exec.inc';
+        require_once DRUSH_BASE_PATH . '/includes/drupal.inc';
+        require_once DRUSH_BASE_PATH . '/includes/output.inc';
+        require_once DRUSH_BASE_PATH . '/includes/cache.inc';
+        require_once DRUSH_BASE_PATH . '/includes/filesystem.inc';
+        require_once DRUSH_BASE_PATH . '/includes/dbtng.inc';
+
+        $drush_info = drush_read_drush_info();
+        define('DRUSH_VERSION', $drush_info['drush_version']);
+
+        $version_parts = explode('.', DRUSH_VERSION);
+        define('DRUSH_MAJOR_VERSION', $version_parts[0]);
+        define('DRUSH_MINOR_VERSION', $version_parts[1]);
 
         $GLOBALS['argv'][0] = 'default';
 

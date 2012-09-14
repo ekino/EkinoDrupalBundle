@@ -3,6 +3,8 @@ Drupal Bundle by Ekino
 
 * THIS IS A WORK IN PROGRESS *
 
+**Requires** at least *Drush 5.0* for compatibility with Symfony console.
+
 The bundle tries to deeply integrate Symfony2 with Drupal and Drupal with Symfony2. Of course this is done without
 altering the Drupal's core.
 

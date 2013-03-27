@@ -5,7 +5,6 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
-        <parameter key="session.class">Ekino\Bundle\DrupalBundle\Port\DrupalSession</parameter>
         <parameter key="ekino.drupal.drupal.class">Ekino\Bundle\DrupalBundle\Drupal\Drupal</parameter>
     </parameters>
 
@@ -20,10 +19,6 @@
 
             <argument type="service" id="ekino.drupal" />
             <argument />
-        </service>
-
-        <service id="ekino.drupal.session" class="Ekino\Bundle\DrupalBundle\Port\DrupalSessionStorage">
-            <argument type="service" id="ekino.drupal" />
         </service>
 
         <service id="ekino.drupal.delivery_strategy.drupal" class="Ekino\Bundle\DrupalBundle\Delivery\FullDrupalDeliveryStrategy" />

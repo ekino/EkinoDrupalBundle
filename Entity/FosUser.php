@@ -11,15 +11,11 @@
 
 namespace Ekino\Bundle\DrupalBundle\Entity;
 
-use Sonata\UserBundle\Entity\BaseUser;
 use Symfony\Component\Security\Core\User\UserInterface as SecurityUserInterface;
 use FOS\UserBundle\Model\UserInterface as FOSUserInterface;
 
 abstract class FosUser extends DrupalUser implements SecurityUserInterface, FOSUserInterface
 {
-    const ROLE_DEFAULT = 'ROLE_USER';
-    const ROLE_SUPER_ADMIN = 'ROLE_SUPER_ADMIN';
-
     /**
      * @var string
      */

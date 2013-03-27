@@ -38,6 +38,7 @@ class EkinoDrupalExtension extends Extension
 
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.xml');
+        $loader->load('session.xml');
         $loader->load('user_hook.xml');
 
         $container->getDefinition('ekino.drupal')

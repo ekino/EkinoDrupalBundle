@@ -59,12 +59,15 @@ The module can be downloaded from the following url : https://github.com/ekino/e
 
 Edit the symfony ``config.yml`` file and add the following lines :
 
+    parameters:
+        session.flashbag.class:       Ekino\Bundle\DrupalBundle\Port\DrupalFlashBag
+        session.attribute_bag.class:  Ekino\Bundle\DrupalBundle\Port\DrupalAttributeBag
+
     framework:
         # ... configuration options
         session:
             # ... configuration options
-            auto_start:     false
-            storage_id:     ekino.drupal.session
+            storage_id:     ekino.drupal.session.storage
 
     ekino_drupal:
         root:          %kernel.root_dir%/../web
@@ -76,18 +79,17 @@ Edit the symfony ``config.yml`` file and add the following lines :
     # declare 2 required mapping definition used by drupal
     doctrine:
         dbal:
-            default_connection: default
-            connections:
-                default:
-                    driver:   %database_driver%
-                    dbname:   %database_name%
-                    user:     %database_user%
-                    host:     %database_host%
-                    password: %database_password%
+            driver:   %database_driver%
+            dbname:   %database_name%
+            user:     %database_user%
+            host:     %database_host%
+            port:     %database_port%
+            password: %database_password%
+            charset:  UTF8
 
-                    mapping_types:
-                        longblob: object
-                        blob: object
+            mapping_types:
+                longblob: object
+                blob: object
 
 The bundle comes with 2 delivery strategies :
 

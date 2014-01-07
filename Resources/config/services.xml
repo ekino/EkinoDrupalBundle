@@ -7,6 +7,7 @@
     <parameters>
         <parameter key="session.class">Ekino\Bundle\DrupalBundle\Port\DrupalSession</parameter>
         <parameter key="ekino.drupal.drupal.class">Ekino\Bundle\DrupalBundle\Drupal\Drupal</parameter>
+        <parameter key="ekino.drupal.exception_listener.class">Ekino\Bundle\DrupalBundle\Listener\ExceptionListener</parameter>
     </parameters>
 
     <services>
@@ -32,6 +33,12 @@
 
         <service id="ekino.drupal.subscriber.user.orm" class="Ekino\Bundle\DrupalBundle\Event\Subscriber\UserSubscriber">
             <tag name="doctrine.event_subscriber" />
+        </service>
+
+        <service id="ekino.drupal.exception_listener" class="%ekino.drupal.exception_listener.class%">
+            <tag name="kernel.event_listener" event="kernel.exception" method="onKernelException" priority="-127" />
+
+            <argument type="service" id="ekino.drupal" />
         </service>
 
         <service id="ekino.drupal.subscriber.user.orm" class="Ekino\Bundle\DrupalBundle\Event\Subscriber\UserSubscriber">

@@ -13,7 +13,9 @@
     ],
     "require": {
         "php": ">=5.3.2",
-        "friendsofsymfony/user-bundle": "*"
+        "friendsofsymfony/user-bundle": "*",
+        "symfony/http-foundation": "*",
+        "symfony/http-kernel": "*"
     },
     "autoload": {
         "psr-0": { "Ekino\\Bundle\\DrupalBundle": "" }

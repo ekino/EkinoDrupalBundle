@@ -113,6 +113,31 @@ function drupal_foo_function() {
 }
 ```
 
+Security
+--------
+
+You can secure a symfony route with a drupal permission, with prefix PERMISSION_DRUPAL_.
+Like it:
+
+``` yml
+security:
+    role_hierarchy:
+        # ...
+
+    firewalls:
+        # ...
+
+    access_control:
+        - { path: ^/symfony/admin, role: PERMISSION_DRUPAL_ACCESS_ADMINISTRATION_PAGES }
+
+```
+
+The PERMISSION_DRUPAL_ACCESS_ADMINISTRATION_PAGES is translate in "access administration pages"
+and used with user_access and global drupal user.
+
+If you want use you "personal access" permission, use role PERMISSION_DRUPAL_PERSONAL_ACCESS for example.
+
+
 Limitations
 -----------
 

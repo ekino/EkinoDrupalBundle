@@ -8,6 +8,7 @@
         <parameter key="session.class">Ekino\Bundle\DrupalBundle\Port\DrupalSession</parameter>
         <parameter key="ekino.drupal.drupal.class">Ekino\Bundle\DrupalBundle\Drupal\Drupal</parameter>
         <parameter key="ekino.drupal.exception_listener.class">Ekino\Bundle\DrupalBundle\Listener\ExceptionListener</parameter>
+        <parameter key="ekino.drupal.access.simple_role_voter.class">Application\Ekino\Bundle\DrupalBundle\Security\Voter\RoleVoter</parameter>
     </parameters>
 
     <services>
@@ -44,7 +45,11 @@
         <service id="ekino.drupal.subscriber.user.orm" class="Ekino\Bundle\DrupalBundle\Event\Subscriber\UserSubscriber">
             <tag name="doctrine.event_subscriber" />
         </service>
-        
+
+        <service id="ekino.drupal.access.simple_role_voter" class="%ekino.drupal.access.simple_role_voter.class%" public="false">
+            <tag name="security.voter" priority="240" />
+        </service>
+
         <service id="ekino.drupal.logger.watchdog" class="Ekino\Bundle\DrupalBundle\Log\LoggerWatchdog"/>
     </services>
 </container>

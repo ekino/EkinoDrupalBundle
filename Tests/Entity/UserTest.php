@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Ekino\Bundle\DrupalBundle\Tests\Drupal;
+namespace Ekino\Bundle\DrupalBundle\Tests\Entity;
 
 use \Ekino\Bundle\DrupalBundle\Entity\User;
 
@@ -118,6 +118,7 @@ class UserTest extends \PHPUnit_Framework_TestCase
             'picture' => NULL,
             'init' => NULL,
             'data' => NULL,
+            'path' => NULL
         );
 
         $this->assertEquals($expected, unserialize($user->serialize()));

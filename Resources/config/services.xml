@@ -7,7 +7,7 @@
     <parameters>
         <parameter key="ekino.drupal.drupal.class">Ekino\Bundle\DrupalBundle\Drupal\Drupal</parameter>
         <parameter key="ekino.drupal.exception_listener.class">Ekino\Bundle\DrupalBundle\Listener\ExceptionListener</parameter>
-        <parameter key="ekino.drupal.access.simple_role_voter.class">Application\Ekino\Bundle\DrupalBundle\Security\Voter\RoleVoter</parameter>
+        <parameter key="ekino.drupal.access.simple_role_voter.class">Ekino\Bundle\DrupalBundle\Security\Voter\RoleVoter</parameter>
     </parameters>
 
     <services>

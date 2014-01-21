@@ -19,63 +19,62 @@ use Symfony\Component\HttpFoundation\Request;
 interface DrupalInterface
 {
     /**
-     * @abstract
-     * initialize the Drupal instance
+     * Initializes the Drupal core
      */
     function initialize();
 
     /**
-     * The shutdown method only catch exit instruction from the drupal code to rebuild the correct response
+     * The shutdown method only catches exit instruction from the Drupal code to rebuild the correct response
      *
-     * @abstract
+     * @param integer $level
+     *
      * @return mixed
      */
-    function shutdown();
+    function shutdown($level);
 
     /**
-     * Disable the response
-     * @abstract
+     * Disables the response
      */
     function disableResponse();
 
     /**
-     * Return true if the current drupal object contains a valid Response object
-     * @abstract
-     * @return bool
+     * Return true if the current Drupal object contains a valid Response object
+     *
+     * @return boolean
      */
     function hasResponse();
 
     /**
-     * @abstract
-     * @return bool
+     * @return boolean
+     *
      * @throws InvalidStateMethodCallException
      */
     function is403();
 
     /**
-     * @abstract
-     * @return bool
+     * @return boolean
+     *
      * @throws InvalidStateMethodCallException
      */
     function is404();
 
     /**
-     * @abstract
-     * @return bool
+     * @return boolean
+     *
      * @throws InvalidStateMethodCallException
      */
     function isOffline();
 
     /**
-     * @abstract
-     * @return bool
+     * @return boolean
+     *
      * @throws InvalidStateMethodCallException
      */
     function isOnline();
 
     /**
-     * @abstract
-     * @return bool
+     * @return boolean
+     *
      * @throws InvalidStateMethodCallException
      */
     function isFound();
@@ -83,63 +82,52 @@ interface DrupalInterface
     /**
      * Return true if the Drupal is correctly installed
      *
-     * @abstract
-     * @return bool
+     * @return boolean
      */
     function isInstalled();
 
     /**
-     * This method build the state of the current drupal instance
-     *  see menu_execute_active_handler function for more information
+     * This method builds the state of the current Drupal instance
+     * @see menu_execute_active_handler function for more information
      *
-     * @abstract
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @return void
+     * @param Request $request
      */
     function defineState(Request $request);
 
     /**
-     * Decorate the inner content and render the page
+     * Decorates the inner content and renders the page
      *
-     * @abstract
-     * @return void
+     * @throws InvalidStateMethodCallException
      */
     function render();
 
     /**
-     * Render the content
-     *
-     * @abstract
+     * Builds the content
      */
     function buildContent();
 
     /**
-     * @abstract
      * @return \Symfony\Component\HttpFoundation\Response
      */
     function getResponse();
 
     /**
-     * @abstract
-     * @param $pageResultCallback
+     * @param integer $pageResultCallback
      */
     function setPageResultCallback($pageResultCallback);
 
     /**
-     * @abstract
-     * @return mixed
+     * @return integer
      */
     function getPageResultCallback();
 
     /**
-     * @abstract
-     * @param $routerItem
+     * @param array $routerItem
      */
     function setRouterItem($routerItem);
 
     /**
-     * @abstract
-     * @return mixed
+     * @return array
      */
     function getRouterItem();
 }

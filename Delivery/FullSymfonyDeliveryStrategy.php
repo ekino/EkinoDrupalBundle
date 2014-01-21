@@ -14,14 +14,14 @@ namespace Ekino\Bundle\DrupalBundle\Delivery;
 use Ekino\Bundle\DrupalBundle\Drupal\DrupalInterface;
 
 /**
- * This strategy let's a change to symfony to sent its own response
+ * This strategy let's a chance to Symfony to sent its own response
  *
  * @author Thomas Rabaix <thomas.rabaix@ekino.com>
  */
 class FullSymfonyDeliveryStrategy implements DeliveryStrategyInterface
 {
     /**
-     * @param Ekino\Bundle\DrupalBundle\Drupal\DrupalInterface $drupal
+     * @param DrupalInterface $drupal
      */
     public function buildResponse(DrupalInterface $drupal)
     {

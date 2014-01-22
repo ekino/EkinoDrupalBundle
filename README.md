@@ -147,3 +147,12 @@ Limitations
 and there is no way to change this.
 * requests must be served through the index.php as it is the default value in the .htaccess file and there is no
 way to change the default script in drupal
+
+Preview
+-------
+
+If installation is completed successfully, the welcome page looks like:
+
+![Screenshot](https://raw.github.com/ekino/EkinoDrupalBundle/2.2/Resources/doc/images/welcome.png)
+
+You can note the Web Debug Toolbar of Symfony at the bottom ;-).

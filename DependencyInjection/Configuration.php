@@ -39,6 +39,15 @@ class Configuration implements ConfigurationInterface
                 ->arrayNode('provider_keys')
                     ->prototype('scalar')->cannotBeEmpty()->end()
                 ->end()
+                ->arrayNode('entity_repositories')
+                    ->prototype('array')
+                        ->children()
+                            ->scalarNode('type')->cannotBeEmpty()->defaultValue('node')->end()
+                            ->scalarNode('bundle')->end()
+                            ->scalarNode('class')->cannotBeEmpty()->defaultValue('Ekino\Bundle\DrupalBundle\Entity\EntityRepository')->end()
+                        ->end()
+                    ->end()
+                ->end()
             ->end();
 
         return $treeBuilder;

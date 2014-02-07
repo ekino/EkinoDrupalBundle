@@ -12,7 +12,7 @@ the use of Drupal libraries from your Symfony2 command.
 Install
 -------
 
-### Download the symfony2 sandbox and the drupal code
+### Download the symfony2 sandbox and the Drupal code
 
 ### Install the files to have the following structure
 
@@ -20,9 +20,9 @@ Install
       - app
       - vendor
       - src
-      - web ( drupal source code)
+      - web (Drupal source code)
 
-The ``web`` directory must be the document root and contains the drupal source code.
+The ``web`` directory must be the document root and contains the Drupal source code.
 
 ### Update the ``index.php`` file
 
@@ -42,20 +42,20 @@ $kernel = new AppKernel('dev', true); //
 $kernel->loadClassCache();
 $kernel->boot();
 
-// make the symfony container available from drupal file
+// make the Symfony container available from Drupal file
 global $container;
 
 $container = $kernel->getContainer();
 
 $kernel->handle(Request::createFromGlobals())->send();
 ```
-### Install the related drupal module
+### Install the related Drupal module
 
-The module can be downloaded from the following url : https://github.com/ekino/ekino_drupal_symfony2
+The module can be downloaded from the following url: https://github.com/ekino/ekino_drupal_symfony2
 
 ### Configuration
 
-Edit the symfony ``config.yml`` file and add the following lines :
+Edit the Symfony ``config.yml`` file and add the following lines:
 
     parameters:
         session.flashbag.class:       Ekino\Bundle\DrupalBundle\Port\DrupalFlashBag
@@ -74,7 +74,16 @@ Edit the symfony ``config.yml`` file and add the following lines :
         # attach a security token to the following provider keys
         provider_keys: [main, admin]
 
-    # declare 2 required mapping definition used by drupal
+        # not required
+        entity_repositories:
+            # 3 equivalent examples of configuration:
+            - { bundle: page }
+            - { type: node, bundle: page }
+            - { type: node, bundle: page, class: Ekino\Bundle\DrupalBundle\Entity\EntityRepository }
+            # you can also define an entity repository:
+            - { type: node, class: Application\Ekino\Bundle\DrupalBundle\Entity\Node\NodeRepository }
+
+    # declare 2 required mapping definition used by Drupal
     doctrine:
         dbal:
             driver:   %database_driver%
@@ -89,10 +98,17 @@ Edit the symfony ``config.yml`` file and add the following lines :
                 longblob: object
                 blob: object
 
-The bundle comes with 2 delivery strategies :
+The bundle comes with 2 delivery strategies:
 
-* ekino.drupal.delivery_strategy.symfony : Drupal returns the response only if the page is not 404
-* ekino.drupal.delivery_strategy.drupal  : Drupal always returns the response, even if the page is 404
+* ekino.drupal.delivery_strategy.symfony: Drupal returns the response only if the page is not 404
+* ekino.drupal.delivery_strategy.drupal : Drupal always returns the response, even if the page is 404
+
+The (optional) section ``entity_repositories`` allows you to easy interact with
+Drupal API to retrieve contents and handle it from Symfony code.
+The configuration offers default values:
+
+* default entity type is ``node``
+* default repository class is ``Ekino\Bundle\DrupalBundle\Entity\EntityRepository``, feel free to configure yours
 
 Update Queries
 --------------
@@ -104,7 +120,7 @@ UPDATE users SET `emailCanonical` = `mail`, `usernameCanonical` = `name`, `roles
 Usage
 -----
 
-Symfony components can be used from within drupal :
+Symfony components can be used from within Drupal:
 
 ``` php
 <?php
@@ -118,7 +134,7 @@ function drupal_foo_function() {
 Security
 --------
 
-You can secure a symfony route with a drupal permission, with prefix PERMISSION_DRUPAL_.
+You can secure a Symfony route with a Drupal permission, with prefix PERMISSION_DRUPAL_.
 Like it:
 
 ``` yml
@@ -135,7 +151,7 @@ security:
 ```
 
 The PERMISSION_DRUPAL_ACCESS_ADMINISTRATION_PAGES is translate in "access administration pages"
-and used with user_access and global drupal user.
+and used with user_access and global Drupal user.
 
 If you want use you "personal access" permission, use role PERMISSION_DRUPAL_PERSONAL_ACCESS for example.
 
@@ -143,10 +159,10 @@ If you want use you "personal access" permission, use role PERMISSION_DRUPAL_PER
 Limitations
 -----------
 
-* It is not possible to use Symfony native class to manage session as drupal initializes its own session handler
+* It is not possible to use Symfony native class to manage session as Drupal initializes its own session handler
 and there is no way to change this.
 * requests must be served through the index.php as it is the default value in the .htaccess file and there is no
-way to change the default script in drupal
+way to change the default script in Drupal
 
 Preview
 -------

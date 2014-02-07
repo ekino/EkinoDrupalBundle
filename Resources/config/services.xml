@@ -46,5 +46,9 @@
         </service>
 
         <service id="ekino.drupal.logger.watchdog" class="Ekino\Bundle\DrupalBundle\Log\LoggerWatchdog"/>
+
+        <service id="ekino.drupal.entity_registry" class="Ekino\Bundle\DrupalBundle\Entity\EntityRegistry">
+            <argument type="service" id="ekino.drupal" />
+        </service>
     </services>
 </container>

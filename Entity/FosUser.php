@@ -11,7 +11,6 @@
 
 namespace Ekino\Bundle\DrupalBundle\Entity;
 
-use Sonata\UserBundle\Entity\BaseUser;
 use Symfony\Component\Security\Core\User\UserInterface as SecurityUserInterface;
 use FOS\UserBundle\Model\UserInterface as FOSUserInterface;
 

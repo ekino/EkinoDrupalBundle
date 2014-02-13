@@ -11,10 +11,11 @@
 
 namespace Ekino\Bundle\DrupalBundle\Drupal;
 
+use Ekino\Bundle\DrupalBundle\Delivery\DeliveryStrategyInterface;
+
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
-use Ekino\Bundle\DrupalBundle\Delivery\DeliveryStrategyInterface;
 
 /**
  * The class retrieve a request and ask drupal to build the content
@@ -25,22 +26,31 @@ use Ekino\Bundle\DrupalBundle\Delivery\DeliveryStrategyInterface;
  */
 class DrupalRequestListener
 {
+    /**
+     * @var DrupalInterface
+     */
     protected $drupal;
 
+    /**
+     * @var DeliveryStrategyInterface
+     */
     protected $strategy;
 
     /**
-     * @param DrupalInterface $drupal
-     * @param \Ekino\Bundle\DrupalBundle\Delivery\DeliveryStrategyInterface $strategy
+     * Constructor
+     *
+     * @param DrupalInterface           $drupal   A Drupal instance
+     * @param DeliveryStrategyInterface $strategy A delivery strategy instance
      */
     public function __construct(DrupalInterface $drupal, DeliveryStrategyInterface $strategy)
     {
-        $this->drupal = $drupal;
+        $this->drupal   = $drupal;
         $this->strategy = $strategy;
     }
 
     /**
-     * @param \Symfony\Component\HttpKernel\Event\GetResponseEvent $event
+     * @param GetResponseEvent $event
+     *
      * @return mixed
      */
     public function onKernelRequest(GetResponseEvent $event)

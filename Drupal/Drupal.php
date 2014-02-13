@@ -11,15 +11,14 @@
 
 namespace Ekino\Bundle\DrupalBundle\Drupal;
 
+use FOS\UserBundle\Model\UserManagerInterface;
+
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-use FOS\UserBundle\Model\UserManagerInterface;
-
 /**
- *
- * This class control a drupal instance to provide helper to render a
- * drupal response into the symfony framework
+ * This class controls a Drupal instance to provide helper to render a
+ * Drupal response into the Symfony framework
  *
  * The class is statefull
  *
@@ -27,47 +26,75 @@ use FOS\UserBundle\Model\UserManagerInterface;
  */
 class Drupal implements DrupalInterface
 {
+    const STATE_FRESH          = 0; // the Drupal instance is not initialized
+    const STATE_INIT           = 1; // the Drupal instance has been initialized
+    const STATE_STATUS_DEFINED = 2; // the response status is known
+    const STATE_INNER_CONTENT  = 3; // Drupal has generated the inner content
+    const STATE_RESPONSE       = 4; // Drupal has generated the Response object
 
-    const STATE_FRESH           = 0; // the drupal instance is not initialized
-    const STATE_INIT            = 1; // the drupal instance has been initialized
-    const STATE_STATUS_DEFINED  = 2; // the response status is known
-    const STATE_INNER_CONTENT   = 3; // drupal has generated the inner content
-    const STATE_RESPONSE        = 4; // drupal has generated the Response object
-
+    /**
+     * @var boolean
+     */
     protected $initialized = false;
 
+    /**
+     * @var string
+     */
     protected $root;
 
+    /**
+     * @var integer
+     */
     protected $status;
 
+    /**
+     * @var integer
+     */
     protected $state;
 
+    /**
+     * @var array
+     */
     protected $routerItem;
 
+    /**
+     * @var boolean
+     */
     protected $encapsulated;
 
+    /**
+     * @var integer
+     */
     protected $pageResultCallback;
 
+    /**
+     * @var boolean
+     */
     protected $disableResponse;
 
+    /**
+     * @var UserManagerInterface
+     */
     protected $userManager;
 
     /**
-     * @param $root
-     * @param \FOS\UserBundle\Model\UserManagerInterface $userManager
+     * Constructor
+     *
+     * @param string               $root        The path of Drupal core
+     * @param UserManagerInterface $userManager A user manager instance
      */
     public function __construct($root, UserManagerInterface $userManager)
     {
-        $this->root             = $root;
-        $this->state            = self::STATE_FRESH;
-        $this->response         = new Response;
-        $this->encapsulated     = false;
-        $this->disableResponse  = false;
-        $this->userManager      = $userManager;
+        $this->root            = $root;
+        $this->state           = self::STATE_FRESH;
+        $this->response        = new Response;
+        $this->encapsulated    = false;
+        $this->disableResponse = false;
+        $this->userManager     = $userManager;
     }
 
     /**
-     * Initialize the Drupal core
+     * {@inheritdoc}
      */
     public function initialize()
     {
@@ -76,11 +103,12 @@ class Drupal implements DrupalInterface
         }
 
         $this->initialized = true;
+        $currentLevel = ob_get_level();
 
-        register_shutdown_function(array($this, 'shutdown'));
+        register_shutdown_function(array($this, 'shutdown'), $currentLevel);
 
         $this->encapsulate(function($path) {
-            // start the drupal bootstrap
+            // start the Drupal bootstrap
             define('DRUPAL_ROOT', $path);
 
             // make sure the default path point to the correct instance
@@ -95,6 +123,8 @@ class Drupal implements DrupalInterface
 
         }, $this->root);
 
+        $this->restoreBufferLevel($currentLevel);
+
         $this->fixAnonymousUser();
         $this->state = self::STATE_INIT;
     }
@@ -102,7 +132,7 @@ class Drupal implements DrupalInterface
     /**
      * State of initilize.
      *
-     * @return boolean 
+     * @return boolean
      */
     public function isInitialized()
     {
@@ -110,7 +140,7 @@ class Drupal implements DrupalInterface
     }
 
     /**
-     * Initialize Drush which boostrap Drupal core
+     * Initializes Drush which boostraps Drupal core
      */
     public function initializeDrush()
     {
@@ -169,9 +199,7 @@ class Drupal implements DrupalInterface
     }
 
     /**
-     * Fix the user, drupal does not provide a hook for anonymous user
-     *
-     * @return
+     * Fixes the user, Drupal does not provide a hook for anonymous user
      */
     public function fixAnonymousUser()
     {
@@ -185,11 +213,9 @@ class Drupal implements DrupalInterface
     }
 
     /**
-     * The shutdown method only catch exit instruction from the drupal code to rebuild the correct response
-     *
-     * @return mixed
+     * {@inheritdoc}
      */
-    public function shutdown()
+    public function shutdown($level)
     {
         if (!$this->encapsulated) {
             return;
@@ -205,11 +231,13 @@ class Drupal implements DrupalInterface
 
         $this->response->setContent($content);
 
+        $this->restoreBufferLevel($level);
+
         $this->response->send();
     }
 
     /**
-     * Disable the response
+     * {@inheritdoc}
      */
     public function disableResponse()
     {
@@ -217,9 +245,7 @@ class Drupal implements DrupalInterface
     }
 
     /**
-     * Return true if the current drupal object contains a valid Response object
-     *
-     * @return bool
+     * {@inheritdoc}
      */
     public function hasResponse()
     {
@@ -227,50 +253,7 @@ class Drupal implements DrupalInterface
     }
 
     /**
-     * This method execute code related to the drupal code, and build a correct response if required
-     *
-     * @return string
-     */
-    protected function encapsulate()
-    {
-        $this->encapsulated = true;
-        $args = func_get_args();
-        $function = array_shift($args);
-
-        ob_start();
-        call_user_func_array($function, $args);
-        $content = ob_get_contents();
-        ob_clean();
-
-        $headers = $this->cleanHeaders();
-        foreach($headers as $name => $value) {
-            $this->response->headers->set($name, $value);
-        }
-
-        $this->encapsulated = false;
-
-        return $content;
-    }
-
-    /**
-     * @return array
-     */
-    protected function cleanHeaders()
-    {
-        $headers = array();
-        foreach(headers_list() as $header) {
-            list($name, $value) = explode(':', $header, 2);
-            $headers[$name] = trim($value);
-
-            header_remove($name);
-        }
-
-        return $headers;
-    }
-
-    /**
-     * @return bool
-     * @throws InvalidStateMethodCallException
+     * {@inheritdoc}
      */
     public function is403()
     {
@@ -281,10 +264,8 @@ class Drupal implements DrupalInterface
         return $this->status == MENU_ACCESS_DENIED;
     }
 
-
     /**
-     * @return bool
-     * @throws InvalidStateMethodCallException
+     * {@inheritdoc}
      */
     public function is404()
     {
@@ -296,8 +277,7 @@ class Drupal implements DrupalInterface
     }
 
     /**
-     * @return bool
-     * @throws InvalidStateMethodCallException
+     * {@inheritdoc}
      */
     public function isOffline()
     {
@@ -309,8 +289,7 @@ class Drupal implements DrupalInterface
     }
 
     /**
-     * @return bool
-     * @throws InvalidStateMethodCallException
+     * {@inheritdoc}
      */
     public function isOnline()
     {
@@ -322,8 +301,7 @@ class Drupal implements DrupalInterface
     }
 
     /**
-     * @return bool
-     * @throws InvalidStateMethodCallException
+     * {@inheritdoc}
      */
     public function isFound()
     {
@@ -335,9 +313,7 @@ class Drupal implements DrupalInterface
     }
 
     /**
-     * Return true if the Drupal is correctly installed
-     *
-     * @return bool
+     * {@inheritdoc}
      */
     public function isInstalled()
     {
@@ -353,11 +329,7 @@ class Drupal implements DrupalInterface
     }
 
     /**
-     * This method build the state of the current drupal instance
-     *  see menu_execute_active_handler function for more information
-     *
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @return void
+     * {@inheritdoc}
      */
     public function defineState(Request $request)
     {
@@ -402,11 +374,8 @@ class Drupal implements DrupalInterface
         $this->status = MENU_FOUND;
     }
 
-
     /**
-     * Decorate the inner content and render the page
-     *
-     * @return void
+     * {@inheritdoc}
      */
     public function render()
     {
@@ -436,7 +405,7 @@ class Drupal implements DrupalInterface
     }
 
     /**
-     * Render the content
+     * {@inheritdoc}
      */
     public function buildContent()
     {
@@ -454,7 +423,7 @@ class Drupal implements DrupalInterface
     }
 
     /**
-     * @return \Symfony\Component\HttpFoundation\Response
+     * {@inheritdoc}
      */
     public function getResponse()
     {
@@ -462,7 +431,7 @@ class Drupal implements DrupalInterface
     }
 
     /**
-     * @param $pageResultCallback
+     * {@inheritdoc}
      */
     public function setPageResultCallback($pageResultCallback)
     {
@@ -470,7 +439,7 @@ class Drupal implements DrupalInterface
     }
 
     /**
-     * @return mixed
+     * {@inheritdoc}
      */
     public function getPageResultCallback()
     {
@@ -478,7 +447,7 @@ class Drupal implements DrupalInterface
     }
 
     /**
-     * @param $routerItem
+     * {@inheritdoc}
      */
     public function setRouterItem($routerItem)
     {
@@ -486,10 +455,81 @@ class Drupal implements DrupalInterface
     }
 
     /**
-     * @return mixed
+     * {@inheritdoc}
      */
     public function getRouterItem()
     {
         return $this->routerItem;
+    }
+
+    /**
+     * This method executes code related to the Drupal code, and builds a correct response if required
+     *
+     * @return string
+     */
+    protected function encapsulate()
+    {
+        $this->encapsulated = true;
+        $args = func_get_args();
+        $function = array_shift($args);
+
+        $content = '';
+
+        ob_start(function($buffer) use (&$content) {
+            $content .= $buffer;
+
+            return '';
+        });
+
+        try {
+            call_user_func_array($function, $args);
+        } catch (\Exception $e) {
+            // @todo: log error message
+        }
+
+        ob_end_clean();
+
+        $headers = $this->cleanHeaders();
+
+        foreach ($headers as $name => $value) {
+            $this->response->headers->set($name, $value);
+        }
+
+        $this->encapsulated = false;
+
+        return $content;
+    }
+
+    /**
+     * @return array
+     */
+    protected function cleanHeaders()
+    {
+        $headers = array();
+
+        foreach (headers_list() as $header) {
+            list($name, $value) = explode(':', $header, 2);
+            $headers[$name] = trim($value);
+
+            header_remove($name);
+        }
+
+        return $headers;
+    }
+
+    /**
+     * Restores the buffer level by the given one
+     *
+     * @param integer $level
+     */
+    protected function restoreBufferLevel($level)
+    {
+        if (!is_numeric($level)) {
+            return;
+        }
+
+        while (ob_get_level() > $level) {
+            ob_end_flush();
+        }
     }
 }

@@ -9,7 +9,10 @@
  * file that was distributed with this source code.
  */
 
-$rootDir = __DIR__.'/../../../../../../../';
+if (file_exists($file = __DIR__.'/autoload.php')) {
+    require_once $file;
+} elseif (file_exists($file = __DIR__.'/autoload.php.dist')) {
+    require_once $file;
+}
 
-require_once $rootDir.'/vendor/symfony/src/Symfony/Component/ClassLoader/UniversalClassLoader.php';
-require_once $rootDir.'/app/autoload.php';
+require_once __DIR__.'/../Drupal/mock.php';

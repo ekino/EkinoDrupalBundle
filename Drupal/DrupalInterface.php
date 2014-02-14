@@ -21,7 +21,7 @@ interface DrupalInterface
     /**
      * Initializes the Drupal core
      */
-    function initialize();
+    public function initialize();
 
     /**
      * The shutdown method only catches exit instruction from the Drupal code to rebuild the correct response
@@ -30,61 +30,61 @@ interface DrupalInterface
      *
      * @return mixed
      */
-    function shutdown($level);
+    public function shutdown($level);
 
     /**
      * Disables the response
      */
-    function disableResponse();
+    public function disableResponse();
 
     /**
      * Return true if the current Drupal object contains a valid Response object
      *
      * @return boolean
      */
-    function hasResponse();
+    public function hasResponse();
 
     /**
      * @return boolean
      *
      * @throws InvalidStateMethodCallException
      */
-    function is403();
+    public function is403();
 
     /**
      * @return boolean
      *
      * @throws InvalidStateMethodCallException
      */
-    function is404();
+    public function is404();
 
     /**
      * @return boolean
      *
      * @throws InvalidStateMethodCallException
      */
-    function isOffline();
+    public function isOffline();
 
     /**
      * @return boolean
      *
      * @throws InvalidStateMethodCallException
      */
-    function isOnline();
+    public function isOnline();
 
     /**
      * @return boolean
      *
      * @throws InvalidStateMethodCallException
      */
-    function isFound();
+    public function isFound();
 
     /**
      * Return true if the Drupal is correctly installed
      *
      * @return boolean
      */
-    function isInstalled();
+    public function isInstalled();
 
     /**
      * This method builds the state of the current Drupal instance
@@ -92,42 +92,60 @@ interface DrupalInterface
      *
      * @param Request $request
      */
-    function defineState(Request $request);
+    public function defineState(Request $request);
 
     /**
      * Decorates the inner content and renders the page
      *
      * @throws InvalidStateMethodCallException
      */
-    function render();
+    public function render();
 
     /**
      * Builds the content
      */
-    function buildContent();
+    public function buildContent();
 
     /**
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    function getResponse();
+    public function getResponse();
 
     /**
      * @param integer $pageResultCallback
      */
-    function setPageResultCallback($pageResultCallback);
+    public function setPageResultCallback($pageResultCallback);
 
     /**
      * @return integer
      */
-    function getPageResultCallback();
+    public function getPageResultCallback();
 
     /**
      * @param array $routerItem
      */
-    function setRouterItem($routerItem);
+    public function setRouterItem($routerItem);
 
     /**
      * @return array
      */
-    function getRouterItem();
+    public function getRouterItem();
+
+    /**
+     * Gets info of entity type if given, all entities otherwise
+     *
+     * @param string $entityType An entity type (like node)
+     *
+     * @return array
+     */
+    public function getEntityInfo($entityType = null);
+
+    /**
+     * Gets the entity controller
+     *
+     * @param string $entityType An entity type (like node)
+     *
+     * @return \DrupalDefaultEntityController
+     */
+    public function getEntityController($entityType);
 }

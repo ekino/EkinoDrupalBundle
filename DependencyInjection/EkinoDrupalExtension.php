@@ -41,18 +41,32 @@ class EkinoDrupalExtension extends Extension
         $loader->load('session.xml');
         $loader->load('user_hook.xml');
 
+        $this->configureEntityRepositories($container, $config);
+
         $container->getDefinition('ekino.drupal')
-            ->replaceArgument(0, $config['root'])
-        ;
+            ->replaceArgument(0, $config['root']);
 
         $container->getDefinition('ekino.drupal.request_listener')
-            ->replaceArgument(1, new Reference($config['strategy_id']))
-        ;
+            ->replaceArgument(1, new Reference($config['strategy_id']));
 
         $container->getDefinition('ekino.drupal.user_registration_hook')
-            ->replaceArgument(2, $config['provider_keys'])
-        ;
+            ->replaceArgument(2, $config['provider_keys']);
 
         $container->setAlias('logger', $config['logger']);
+    }
+
+    /**
+     * Configures the entity repositories
+     *
+     * @param ContainerBuilder $container A container builder instance
+     * @param array            $config    An array of configuration
+     */
+    private function configureEntityRepositories(ContainerBuilder $container, array $config)
+    {
+        $registry = $container->getDefinition('ekino.drupal.entity_registry');
+
+        foreach ($config['entity_repositories'] as $repository) {
+            $registry->addMethodCall('addRepositoryMetadata', array($repository['class'], $repository['type'], $repository['bundle']));
+        }
     }
 }

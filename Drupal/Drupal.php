@@ -463,6 +463,26 @@ class Drupal implements DrupalInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getEntityInfo($entityType = null)
+    {
+        $this->initialize();
+
+        return entity_get_info($entityType);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getEntityController($entityType)
+    {
+        $this->initialize();
+
+        return entity_get_controller($entityType);
+    }
+
+    /**
      * This method executes code related to the Drupal code, and builds a correct response if required
      *
      * @return string

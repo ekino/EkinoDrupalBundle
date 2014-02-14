@@ -18,10 +18,9 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  */
 class EkinoDrupalBundle extends Bundle
 {
-
     /**
-    * {@inheritdoc}
-    */
+     * {@inheritdoc}
+     */
     public function boot()
     {
         if (php_sapi_name() === 'cli' && !defined('EKINO_DRUSH_FROM')) {

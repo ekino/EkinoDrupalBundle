@@ -37,10 +37,6 @@
             <argument type="service" id="ekino.drupal" />
         </service>
 
-        <service id="ekino.drupal.subscriber.user.orm" class="Ekino\Bundle\DrupalBundle\Event\Subscriber\UserSubscriber">
-            <tag name="doctrine.event_subscriber" />
-        </service>
-
         <service id="ekino.drupal.access.simple_role_voter" class="%ekino.drupal.access.simple_role_voter.class%" public="false">
             <tag name="security.voter" priority="240" />
         </service>

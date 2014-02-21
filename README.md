@@ -83,6 +83,12 @@ Edit the Symfony ``config.yml`` file and add the following lines:
             # you can also define an entity repository:
             - { type: node, class: Application\Ekino\Bundle\DrupalBundle\Entity\Node\NodeRepository }
 
+        # switch to true if you want to prefix the name of Symfony tables
+        table_prefix:
+            enabled: false
+            prefix:  symfony__
+            exclude: [users]
+
     # declare 2 required mapping definition used by Drupal
     doctrine:
         dbal:

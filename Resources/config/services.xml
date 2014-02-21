@@ -31,14 +31,17 @@
             <tag name="doctrine.event_subscriber" />
         </service>
 
+        <service id="ekino.drupal.subscriber.table_prefix" class="Ekino\Bundle\DrupalBundle\Event\Subscriber\TablePrefixSubscriber">
+            <tag name="doctrine.event_subscriber" />
+
+            <argument />
+            <argument />
+        </service>
+
         <service id="ekino.drupal.exception_listener" class="%ekino.drupal.exception_listener.class%">
             <tag name="kernel.event_listener" event="kernel.exception" method="onKernelException" priority="-127" />
 
             <argument type="service" id="ekino.drupal" />
-        </service>
-
-        <service id="ekino.drupal.subscriber.user.orm" class="Ekino\Bundle\DrupalBundle\Event\Subscriber\UserSubscriber">
-            <tag name="doctrine.event_subscriber" />
         </service>
 
         <service id="ekino.drupal.access.simple_role_voter" class="%ekino.drupal.access.simple_role_voter.class%" public="false">

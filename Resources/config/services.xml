@@ -31,6 +31,13 @@
             <tag name="doctrine.event_subscriber" />
         </service>
 
+        <service id="ekino.drupal.subscriber.table_prefix" class="Ekino\Bundle\DrupalBundle\Event\Subscriber\TablePrefixSubscriber">
+            <tag name="doctrine.event_subscriber" />
+
+            <argument />
+            <argument />
+        </service>
+
         <service id="ekino.drupal.exception_listener" class="%ekino.drupal.exception_listener.class%">
             <tag name="kernel.event_listener" event="kernel.exception" method="onKernelException" priority="-127" />
 

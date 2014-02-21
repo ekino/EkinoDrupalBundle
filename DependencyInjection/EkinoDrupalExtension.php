@@ -42,6 +42,7 @@ class EkinoDrupalExtension extends Extension
         $loader->load('user_hook.xml');
 
         $this->configureEntityRepositories($container, $config);
+        $this->configureTablesPrefix($container, $config);
 
         $container->getDefinition('ekino.drupal')
             ->replaceArgument(0, $config['root']);
@@ -68,5 +69,26 @@ class EkinoDrupalExtension extends Extension
         foreach ($config['entity_repositories'] as $repository) {
             $registry->addMethodCall('addRepositoryMetadata', array($repository['class'], $repository['type'], $repository['bundle']));
         }
+    }
+
+    /**
+     * Configures the tables prefix
+     *
+     * @param ContainerBuilder $container A container builder instance
+     * @param array            $config    An array of configuration
+     */
+    private function configureTablesPrefix(ContainerBuilder $container, array $config)
+    {
+        $id = 'ekino.drupal.subscriber.table_prefix';
+
+        if (false === $config['table_prefix']['enabled']) {
+            $container->removeDefinition($id);
+
+            return;
+        }
+
+        $definition = $container->getDefinition($id);
+        $definition->replaceArgument(0, $config['table_prefix']['prefix']);
+        $definition->replaceArgument(1, $config['table_prefix']['exclude']);
     }
 }

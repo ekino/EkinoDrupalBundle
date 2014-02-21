@@ -48,6 +48,17 @@ class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                 ->end()
+                ->arrayNode('table_prefix')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->booleanNode('enabled')->defaultFalse()->end()
+                        ->scalarNode('prefix')->defaultValue('symfony__')->end()
+                        ->arrayNode('exclude')
+                            ->prototype('scalar')->end()
+                            ->defaultValue(array('users'))
+                        ->end()
+                    ->end()
+                ->end()
             ->end();
 
         return $treeBuilder;

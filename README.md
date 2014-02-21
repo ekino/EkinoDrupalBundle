@@ -104,6 +104,12 @@ Edit the Symfony ``config.yml`` file and add the following lines:
                 longblob: object
                 blob: object
 
+            # Tips: this allows Doctrine to consider only tables starting with
+            # "symfony__" during a migration generation.
+            # Think to add Doctrine migrations table here or configure it in
+            # the doctrine_migrations section (table_name)
+            schema_filter: ~^(symfony__|migration_versions)~
+
 The bundle comes with 2 delivery strategies:
 
 * ekino.drupal.delivery_strategy.symfony: Drupal returns the response only if the page is not 404

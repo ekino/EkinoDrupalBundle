@@ -507,7 +507,8 @@ class Drupal implements DrupalInterface
             // @todo: log error message
         }
 
-        ob_end_clean();
+        ob_end_flush();
+        ob_clean();
 
         $headers = $this->cleanHeaders();
 

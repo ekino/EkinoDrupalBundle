@@ -59,6 +59,12 @@ class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                 ->end()
+                ->arrayNode('session')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->booleanNode('refresh_cookie_lifetime')->defaultFalse()->end()
+                    ->end()
+                ->end()
             ->end();
 
         return $treeBuilder;

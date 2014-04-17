@@ -1,6 +1,8 @@
 Drupal Bundle by Ekino
 ======================
 
+[![Build Status](https://secure.travis-ci.org/ekino/EkinoDrupalBundle.png?branch=master)](http://travis-ci.org/ekino/EkinoDrupalBundle)
+
 **Requires** at least *Drush 5.0* for compatibility with Symfony console.
 
 The bundle tries to deeply integrate Symfony2 with Drupal and Drupal with Symfony2. Of course this is done without
@@ -88,6 +90,10 @@ Edit the Symfony ``config.yml`` file and add the following lines:
             enabled: false
             prefix:  symfony__
             exclude: [users]
+
+        # optional
+        session:
+            refresh_cookie_lifetime: true # default value: false
 
     # declare 2 required mapping definition used by Drupal
     doctrine:

@@ -54,6 +54,9 @@ class EkinoDrupalExtension extends Extension
             ->replaceArgument(2, $config['provider_keys']);
 
         $container->setAlias('logger', $config['logger']);
+
+        $container->getDefinition('ekino.drupal.session.storage')
+            ->replaceArgument(1, $config['session']['refresh_cookie_lifetime']);
     }
 
     /**

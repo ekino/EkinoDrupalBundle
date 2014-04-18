@@ -51,14 +51,21 @@ class DrupalSessionStorage implements SessionStorageInterface
     protected $drupal;
 
     /**
+     * @var bool
+     */
+    protected $refreshCookieLifetime;
+
+    /**
      * Constructor.
      *
-     * @param Drupal           $drupal
-     * @param null|MetadataBag $metaBag (optional)
+     * @param Drupal           $drupal                A Drupal instance
+     * @param bool             $refreshCookieLifetime Do we need to refresh session cookie lifetime?
+     * @param null|MetadataBag $metaBag               A metadata bag (optional)
      */
-    public function __construct(Drupal $drupal, MetadataBag $metaBag = null)
+    public function __construct(Drupal $drupal, $refreshCookieLifetime, MetadataBag $metaBag = null)
     {
         $this->drupal = $drupal;
+        $this->refreshCookieLifetime = $refreshCookieLifetime;
 
         $this->setMetadataBag($metaBag);
     }
@@ -77,6 +84,14 @@ class DrupalSessionStorage implements SessionStorageInterface
         $this->drupal->initialize();
 
         $this->started = drupal_session_started();
+
+        // refresh cookie lifetime if enabled in configuration
+        if ($this->started && $this->refreshCookieLifetime) {
+            $params = session_get_cookie_params();
+            $expire = $params['lifetime'] ? REQUEST_TIME + $params['lifetime'] : 0;
+
+            setcookie(session_name(), session_id(), $expire, $params['path'], $params['domain'], $params['secure'], $params['httponly']);
+        }
 
         // force start session
         if (!$this->started) {

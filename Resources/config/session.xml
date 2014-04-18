@@ -13,6 +13,7 @@
     <services>
         <service id="ekino.drupal.session.storage" class="%ekino.drupal.session.storage.class%">
             <argument type="service" id="ekino.drupal" />
+            <argument />
         </service>
     </services>
 </container>

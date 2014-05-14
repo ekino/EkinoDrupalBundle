@@ -39,7 +39,8 @@
         </service>
 
         <service id="ekino.drupal.exception_listener" class="%ekino.drupal.exception_listener.class%">
-            <tag name="kernel.event_listener" event="kernel.exception" method="onKernelException" priority="-127" />
+            <!-- low priority to give somebody else a chance to handle the exception -->
+            <tag name="kernel.event_listener" event="kernel.exception" method="onKernelException" priority="-128" />
 
             <argument type="service" id="ekino.drupal" />
         </service>

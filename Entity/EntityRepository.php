@@ -51,22 +51,40 @@ class EntityRepository
     }
 
     /**
-     * Finds entities by given criteria
-     *
-     * @todo Implements other methods like propertyCondition, fieldCondition, ...
-     *
-     * @param array        $criteria An array of criteria to filter results
-     * @param integer|null $offset   Offset used in query
-     * @param integer|null $limit    Limit used in query
+     * Finds all published entities
      *
      * @return array
      */
-    public function findBy(array $criteria, $offset = null, $limit = null)
+    public function findAllPublished()
+    {
+        return $this->findBy(array(), array(array(
+            'column' => 'status',
+            'value'  => 1,
+        )));
+    }
+
+    /**
+     * Finds entities by given criteria
+     *
+     * @todo Implements other methods like fieldCondition, ...
+     *
+     * @param array        $entityConditions   An array of entity conditions to filter results
+     * @param array        $propertyConditions An array of property conditions to filter results
+     * @param integer|null $offset             Offset used in query
+     * @param integer|null $limit              Limit used in query
+     *
+     * @return array
+     */
+    public function findBy(array $entityConditions, array $propertyConditions = array(), $offset = null, $limit = null)
     {
         $query = $this->createQuery();
 
-        foreach ($criteria as $crit) {
+        foreach ($entityConditions as $crit) {
             $query->entityCondition($crit['name'], $crit['value'], array_key_exists('operator', $crit) ? $crit['operator'] : null);
+        }
+
+        foreach ($propertyConditions as $crit) {
+            $query->propertyCondition($crit['column'], $crit['value'], array_key_exists('operator', $crit) ? $crit['operator'] : null);
         }
 
         if (null !== $offset) {
@@ -98,17 +116,51 @@ class EntityRepository
     }
 
     /**
-     * Finds one entity by given criteria
+     * Finds one published entity by a given identifier
      *
-     * @param array $criteria An array of criteria to filter results
+     * @param integer $id An entity identifier
      *
      * @return \stdClass|false
      */
-    public function findOneBy(array $criteria)
+    public function findPublished($id)
     {
-        $entities = $this->findBy($criteria, null, 1);
+        return $this->findOnePublishedBy(array(array(
+            'name'  => 'entity_id',
+            'value' => $id,
+        )));
+    }
+
+    /**
+     * Finds one entity by given criteria
+     *
+     * @param array $entityConditions   An array of entity conditions to filter results
+     * @param array $propertyConditions An array of property conditions to filter results
+     *
+     * @return \stdClass|false
+     */
+    public function findOneBy(array $entityConditions, array $propertyConditions = array())
+    {
+        $entities = $this->findBy($entityConditions, $propertyConditions, null, 1);
 
         return reset($entities);
+    }
+
+    /**
+     * Finds one published entity by given criteria
+     *
+     * @param array $entityConditions   An array of entity conditions to filter results
+     * @param array $propertyConditions An array of property conditions to filter results
+     *
+     * @return \stdClass|false
+     */
+    public function findOnePublishedBy(array $entityConditions, array $propertyConditions = array())
+    {
+        $propertyConditions = array_replace_recursive($propertyConditions, array(array(
+            'column' => 'status',
+            'value'  => 1,
+        )));
+
+        return $this->findOneBy($entityConditions, $propertyConditions);
     }
 
     /**

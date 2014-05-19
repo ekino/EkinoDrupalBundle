@@ -37,6 +37,27 @@ class EntityRepositoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Tests findAllPublished method
+     */
+    public function testFindAllPublished()
+    {
+        $repository = $this->getMockBuilder('Ekino\Bundle\DrupalBundle\Entity\EntityRepository')
+            ->setConstructorArgs(array('node'))
+            ->setMethods(array('findBy'))
+            ->getMock();
+
+        $repository
+            ->expects($this->once())
+            ->method('findBy')
+            ->with($this->equalTo(array()), $this->equalTo(array(array(
+                'column' => 'status',
+                'value'  => 1,
+            ))));
+
+        $repository->findAllPublished();
+    }
+
+    /**
      * Tests a very simple call to findBy method
      */
     public function testSimpleFindBy()
@@ -53,7 +74,7 @@ class EntityRepositoryTest extends \PHPUnit_Framework_TestCase
             ->method('createQuery')
             ->will($this->returnValue($query));
 
-        foreach (array('entityCondition', 'range') as $method) {
+        foreach (array('entityCondition', 'propertyCondition', 'range') as $method) {
             $query
                 ->expects($this->never())
                 ->method($method);
@@ -93,9 +114,22 @@ class EntityRepositoryTest extends \PHPUnit_Framework_TestCase
             ->method('entityCondition')
             ->with($this->equalTo('bundle'), $this->equalTo('page'), $this->equalTo('='));
 
+        $query
+            ->expects($this->at(2))
+            ->method('propertyCondition')
+            ->with($this->equalTo('status'), $this->equalTo(1), $this->equalTo(null));
+
+        $query
+            ->expects($this->at(3))
+            ->method('propertyCondition')
+            ->with($this->equalTo('title'), $this->equalTo('test title'), $this->equalTo('='));
+
         $repository->findBy(array(
             array('name' => 'entity_type', 'value' => 'node'),
             array('name' => 'bundle',      'value' => 'page', 'operator' => '='),
+        ), array(
+            array('column' => 'status', 'value' => 1),
+            array('column' => 'title',  'value' => 'test title', 'operator' => '='),
         ));
     }
 
@@ -121,7 +155,7 @@ class EntityRepositoryTest extends \PHPUnit_Framework_TestCase
             ->method('range')
             ->with($this->equalTo(0));
 
-        $repository->findBy(array(), 0);
+        $repository->findBy(array(), array(), 0);
     }
 
     /**
@@ -146,7 +180,7 @@ class EntityRepositoryTest extends \PHPUnit_Framework_TestCase
             ->method('range')
             ->with($this->equalTo(null), $this->equalTo(10));
 
-        $repository->findBy(array(), null, 10);
+        $repository->findBy(array(), array(), null, 10);
     }
 
     /**
@@ -176,7 +210,7 @@ class EntityRepositoryTest extends \PHPUnit_Framework_TestCase
             ->method('range')
             ->with($this->equalTo(0), $this->equalTo(10));
 
-        $repository->findBy(array(), 0, 10);
+        $repository->findBy(array(), array(), 0, 10);
     }
 
     /**
@@ -201,6 +235,27 @@ class EntityRepositoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Tests the findPublished method
+     */
+    public function testFindPublished()
+    {
+        $repository = $this->getMockBuilder('Ekino\Bundle\DrupalBundle\Entity\EntityRepository')
+            ->setConstructorArgs(array('node'))
+            ->setMethods(array('findOnePublishedBy'))
+            ->getMock();
+
+        $repository
+            ->expects($this->once())
+            ->method('findOnePublishedBy')
+            ->with($this->equalTo(array(array(
+                'name'  => 'entity_id',
+                'value' => 10,
+            ))));
+
+        $repository->findPublished(10);
+    }
+
+    /**
      * Tests the findOneBy method
      */
     public function testFindOneBy()
@@ -218,10 +273,37 @@ class EntityRepositoryTest extends \PHPUnit_Framework_TestCase
         $repository
             ->expects($this->once())
             ->method('findBy')
-            ->with($this->equalTo($criteria), $this->equalTo(null), $this->equalTo(1))
+            ->with($this->equalTo($criteria), $this->equalTo(array()), $this->equalTo(null), $this->equalTo(1))
             ->will($this->returnValue(array()));
 
         $repository->findOneBy($criteria);
+    }
+
+    /**
+     * Tests the findOnePublishedBy method
+     */
+    public function testFindOnePublishedBy()
+    {
+        $repository = $this->getMockBuilder('Ekino\Bundle\DrupalBundle\Entity\EntityRepository')
+            ->setConstructorArgs(array('node'))
+            ->setMethods(array('findOneBy'))
+            ->getMock();
+
+        $criteria = array(
+            array('name' => 'entity_type', 'value' => 'node'),
+            array('name' => 'bundle',      'value' => 'page'),
+        );
+
+        $repository
+            ->expects($this->once())
+            ->method('findOneBy')
+            ->with($this->equalTo($criteria), $this->equalTo(array(array(
+                'column' => 'status',
+                'value'  => 1,
+            ))))
+            ->will($this->returnValue(array()));
+
+        $repository->findOnePublishedBy($criteria);
     }
 
     /**

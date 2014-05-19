@@ -31,6 +31,11 @@ interface EntityFieldQueryInterface
     /**
      * @see \EntityFieldQuery
      */
+    public function fieldCondition();
+
+    /**
+     * @see \EntityFieldQuery
+     */
     public function range();
 
     /**

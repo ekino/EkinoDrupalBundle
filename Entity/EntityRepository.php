@@ -66,16 +66,15 @@ class EntityRepository
     /**
      * Finds entities by given criteria
      *
-     * @todo Implements other methods like fieldCondition, ...
-     *
      * @param array        $entityConditions   An array of entity conditions to filter results
      * @param array        $propertyConditions An array of property conditions to filter results
+     * @param array        $fieldConditions    An array of field conditions to filter results
      * @param integer|null $offset             Offset used in query
      * @param integer|null $limit              Limit used in query
      *
      * @return array
      */
-    public function findBy(array $entityConditions, array $propertyConditions = array(), $offset = null, $limit = null)
+    public function findBy(array $entityConditions, array $propertyConditions = array(), array $fieldConditions = array(), $offset = null, $limit = null)
     {
         $query = $this->createQuery();
 
@@ -85,6 +84,10 @@ class EntityRepository
 
         foreach ($propertyConditions as $crit) {
             $query->propertyCondition($crit['column'], $crit['value'], array_key_exists('operator', $crit) ? $crit['operator'] : null);
+        }
+
+        foreach ($fieldConditions as $crit) {
+            $query->fieldCondition($crit['field'], $crit['column'], $crit['value'], array_key_exists('operator', $crit) ? $crit['operator'] : null);
         }
 
         if (null !== $offset) {
@@ -135,12 +138,13 @@ class EntityRepository
      *
      * @param array $entityConditions   An array of entity conditions to filter results
      * @param array $propertyConditions An array of property conditions to filter results
+     * @param array $fieldConditions    An array of field conditions to filter results
      *
      * @return \stdClass|false
      */
-    public function findOneBy(array $entityConditions, array $propertyConditions = array())
+    public function findOneBy(array $entityConditions, array $propertyConditions = array(), array $fieldConditions = array())
     {
-        $entities = $this->findBy($entityConditions, $propertyConditions, null, 1);
+        $entities = $this->findBy($entityConditions, $propertyConditions, $fieldConditions, null, 1);
 
         return reset($entities);
     }
@@ -150,17 +154,18 @@ class EntityRepository
      *
      * @param array $entityConditions   An array of entity conditions to filter results
      * @param array $propertyConditions An array of property conditions to filter results
+     * @param array $fieldConditions    An array of field conditions to filter results
      *
      * @return \stdClass|false
      */
-    public function findOnePublishedBy(array $entityConditions, array $propertyConditions = array())
+    public function findOnePublishedBy(array $entityConditions, array $propertyConditions = array(), array $fieldConditions = array())
     {
         $propertyConditions = array_replace_recursive($propertyConditions, array(array(
             'column' => 'status',
             'value'  => 1,
         )));
 
-        return $this->findOneBy($entityConditions, $propertyConditions);
+        return $this->findOneBy($entityConditions, $propertyConditions, $fieldConditions);
     }
 
     /**

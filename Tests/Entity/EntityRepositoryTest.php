@@ -124,12 +124,25 @@ class EntityRepositoryTest extends \PHPUnit_Framework_TestCase
             ->method('propertyCondition')
             ->with($this->equalTo('title'), $this->equalTo('test title'), $this->equalTo('='));
 
+        $query
+            ->expects($this->at(4))
+            ->method('fieldCondition')
+            ->with($this->equalTo('field_name_1'), $this->equalTo('column_name_1'), $this->equalTo(1), $this->equalTo(null));
+
+        $query
+            ->expects($this->at(5))
+            ->method('fieldCondition')
+            ->with($this->equalTo('field_name_2'), $this->equalTo('column_name_2'), $this->equalTo('value_2'), $this->equalTo('='));
+
         $repository->findBy(array(
             array('name' => 'entity_type', 'value' => 'node'),
             array('name' => 'bundle',      'value' => 'page', 'operator' => '='),
         ), array(
             array('column' => 'status', 'value' => 1),
             array('column' => 'title',  'value' => 'test title', 'operator' => '='),
+        ), array(
+            array('field' => 'field_name_1', 'column' => 'column_name_1', 'value' => 1),
+            array('field' => 'field_name_2', 'column' => 'column_name_2', 'value' => 'value_2', 'operator' => '='),
         ));
     }
 
@@ -155,7 +168,7 @@ class EntityRepositoryTest extends \PHPUnit_Framework_TestCase
             ->method('range')
             ->with($this->equalTo(0));
 
-        $repository->findBy(array(), array(), 0);
+        $repository->findBy(array(), array(), array(), 0);
     }
 
     /**
@@ -180,7 +193,7 @@ class EntityRepositoryTest extends \PHPUnit_Framework_TestCase
             ->method('range')
             ->with($this->equalTo(null), $this->equalTo(10));
 
-        $repository->findBy(array(), array(), null, 10);
+        $repository->findBy(array(), array(), array(), null, 10);
     }
 
     /**
@@ -210,7 +223,7 @@ class EntityRepositoryTest extends \PHPUnit_Framework_TestCase
             ->method('range')
             ->with($this->equalTo(0), $this->equalTo(10));
 
-        $repository->findBy(array(), array(), 0, 10);
+        $repository->findBy(array(), array(), array(), 0, 10);
     }
 
     /**
@@ -273,7 +286,7 @@ class EntityRepositoryTest extends \PHPUnit_Framework_TestCase
         $repository
             ->expects($this->once())
             ->method('findBy')
-            ->with($this->equalTo($criteria), $this->equalTo(array()), $this->equalTo(null), $this->equalTo(1))
+            ->with($this->equalTo($criteria), $this->equalTo(array()), $this->equalTo(array()), $this->equalTo(null), $this->equalTo(1))
             ->will($this->returnValue(array()));
 
         $repository->findOneBy($criteria);

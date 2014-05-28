@@ -40,6 +40,7 @@ class EkinoDrupalExtension extends Extension
         $loader->load('services.xml');
         $loader->load('session.xml');
         $loader->load('user_hook.xml');
+        $loader->load('twig.xml');
 
         $this->configureEntityRepositories($container, $config);
         $this->configureTablesPrefix($container, $config);

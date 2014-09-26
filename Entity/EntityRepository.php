@@ -160,10 +160,14 @@ class EntityRepository
      */
     public function findOnePublishedBy(array $entityConditions, array $propertyConditions = array(), array $fieldConditions = array())
     {
-        $propertyConditions = array_replace_recursive($propertyConditions, array(array(
+        $propertyConditions = array_filter($propertyConditions, function ($item) {
+            return isset($item['column']) && 'status' != $item['column'];
+        });
+
+        $propertyConditions[] = array(
             'column' => 'status',
             'value'  => 1,
-        )));
+        );
 
         return $this->findOneBy($entityConditions, $propertyConditions, $fieldConditions);
     }

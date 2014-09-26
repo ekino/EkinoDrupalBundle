@@ -310,13 +310,45 @@ class EntityRepositoryTest extends \PHPUnit_Framework_TestCase
         $repository
             ->expects($this->once())
             ->method('findOneBy')
-            ->with($this->equalTo($criteria), $this->equalTo(array(array(
-                'column' => 'status',
-                'value'  => 1,
-            ))))
+            ->with($this->equalTo($criteria), $this->equalTo(array(
+                array('column' => 'language', 'value'  => 'fr'),
+                array('column' => 'status',   'value'  => 1),
+            )))
             ->will($this->returnValue(array()));
 
-        $repository->findOnePublishedBy($criteria);
+        $repository->findOnePublishedBy($criteria, array(
+            array('column' => 'language', 'value' => 'fr')
+        ));
+    }
+
+    /**
+     * Tests the findOnePublishedBy method when trying to override status
+     */
+    public function testFindOnePublishedByTryingToOverrideStatus()
+    {
+        $repository = $this->getMockBuilder('Ekino\Bundle\DrupalBundle\Entity\EntityRepository')
+            ->setConstructorArgs(array('node'))
+            ->setMethods(array('findOneBy'))
+            ->getMock();
+
+        $criteria = array(
+            array('name' => 'entity_type', 'value' => 'node'),
+            array('name' => 'bundle',      'value' => 'page'),
+        );
+
+        $repository
+            ->expects($this->once())
+            ->method('findOneBy')
+            ->with($this->equalTo($criteria), $this->equalTo(array(
+                array('column' => 'language', 'value'  => 'fr'),
+                array('column' => 'status',   'value'  => 1),
+            )))
+            ->will($this->returnValue(array()));
+
+        $repository->findOnePublishedBy($criteria, array(
+            array('column' => 'language', 'value' => 'fr'),
+            array('column' => 'status', 'value' => 0)
+        ));
     }
 
     /**

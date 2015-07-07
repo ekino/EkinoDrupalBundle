@@ -23,6 +23,8 @@
             <argument />
         </service>
 
+        <service id="ekino.drupal.delivery_strategy.background" class="Ekino\Bundle\DrupalBundle\Delivery\BackgroundDeliveryStrategy" />
+
         <service id="ekino.drupal.delivery_strategy.drupal" class="Ekino\Bundle\DrupalBundle\Delivery\FullDrupalDeliveryStrategy" />
 
         <service id="ekino.drupal.delivery_strategy.symfony" class="Ekino\Bundle\DrupalBundle\Delivery\FullSymfonyDeliveryStrategy" />

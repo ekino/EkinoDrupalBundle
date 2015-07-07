@@ -116,10 +116,11 @@ Edit the Symfony ``config.yml`` file and add the following lines:
             # the doctrine_migrations section (table_name)
             schema_filter: ~^(symfony__|migration_versions)~
 
-The bundle comes with 2 delivery strategies:
+The bundle comes with 3 delivery strategies:
 
+* ekino.drupal.delivery_strategy.background: Drupal never returns the response, Symfony does
+* ekino.drupal.delivery_strategy.drupal: Drupal always returns the response, even if the page is 404
 * ekino.drupal.delivery_strategy.symfony: Drupal returns the response only if the page is not 404
-* ekino.drupal.delivery_strategy.drupal : Drupal always returns the response, even if the page is 404
 
 The (optional) section ``entity_repositories`` allows you to easy interact with
 Drupal API to retrieve contents and handle it from Symfony code.

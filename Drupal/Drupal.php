@@ -508,7 +508,6 @@ class Drupal implements DrupalInterface
         }
 
         ob_end_flush();
-        ob_clean();
 
         $headers = $this->cleanHeaders();
 

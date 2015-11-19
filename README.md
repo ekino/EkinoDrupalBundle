@@ -49,7 +49,12 @@ global $container;
 
 $container = $kernel->getContainer();
 
-$kernel->handle(Request::createFromGlobals())->send();
+$request = Request::createFromGlobals();
+
+$response = $kernel->handle($request);
+$response->send();
+
+$kernel->terminate($request, $response);
 ```
 ### Install the related Drupal module
 

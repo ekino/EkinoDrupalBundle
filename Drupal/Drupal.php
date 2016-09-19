@@ -53,6 +53,11 @@ class Drupal implements DrupalInterface
     protected $state;
 
     /**
+     * @var Response
+     */
+    protected $response;
+
+    /**
      * @var array
      */
     protected $routerItem;
@@ -87,7 +92,7 @@ class Drupal implements DrupalInterface
     {
         $this->root            = $root;
         $this->state           = self::STATE_FRESH;
-        $this->response        = new Response;
+        $this->response        = new Response();
         $this->encapsulated    = false;
         $this->disableResponse = false;
         $this->userManager     = $userManager;
@@ -225,6 +230,12 @@ class Drupal implements DrupalInterface
 
         foreach ($headers as $name => $value) {
             $this->response->headers->set($name, $value);
+        }
+
+        $statusCode = http_response_code();
+
+        if ($statusCode !== false) {
+            $this->response->setStatusCode($statusCode);
         }
 
         $content = ob_get_contents();
@@ -400,6 +411,12 @@ class Drupal implements DrupalInterface
         }, $this);
 
         $this->response->setContent($content);
+
+        $statusCode = http_response_code();
+
+        if ($statusCode !== false) {
+            $this->response->setStatusCode($statusCode);
+        }
 
         $this->state = self::STATE_RESPONSE;
     }

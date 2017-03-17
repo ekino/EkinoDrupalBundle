@@ -16,7 +16,8 @@
         "friendsofsymfony/user-bundle": "*",
         "symfony/http-foundation": ">=2.1,<3.0-dev",
         "symfony/http-kernel": ">=2.1,<3.0-dev",
-        "twig/extensions": "1.0.*"
+        "twig/extensions": "1.0.*",
+        "psr/log": "1.0.*"
     },
     "autoload": {
         "psr-0": { "Ekino\\Bundle\\DrupalBundle": "" }

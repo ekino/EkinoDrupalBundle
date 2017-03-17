@@ -12,7 +12,7 @@
 namespace Ekino\Bundle\DrupalBundle\Event\Listener;
 
 use Ekino\Bundle\DrupalBundle\Event\DrupalEvent;
-use Symfony\Component\HttpKernel\Log\LoggerInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -24,35 +24,40 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class UserRegistrationHookListener
 {
-    protected $userManager;
-
+    /**
+     * @var LoggerInterface
+     */
     protected $logger;
 
+    /**
+     * @var Request
+     */
     protected $request;
 
+    /**
+     * @var array
+     */
     protected $providerKeys;
 
     /**
-     * @param \Symfony\Component\HttpKernel\Log\LoggerInterface $logger
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param array $providerKeys
+     * @param LoggerInterface $logger
+     * @param Request         $request
+     * @param array           $providerKeys
      */
     public function __construct(LoggerInterface $logger, Request $request, array $providerKeys)
     {
-        $this->logger      = $logger;
-        $this->request     = $request;
+        $this->logger       = $logger;
+        $this->request      = $request;
         $this->providerKeys = $providerKeys;
     }
 
     /**
      * http://api.drupal.org/api/drupal/modules--user--user.api.php/function/hook_user_login/7
      *
-     * @param \Ekino\Bundle\DrupalBundle\Event\DrupalEvent $event
-     * @return void
+     * @param DrupalEvent $event
      */
     public function onLogin(DrupalEvent $event)
     {
-        $edit = $event->getParameter(0);
         $user = $event->getParameter(1);
 
         if (!$user instanceof UserInterface) {
@@ -64,16 +69,12 @@ class UserRegistrationHookListener
         // will be used
         foreach ($this->providerKeys as $providerKey) {
             $token = new UsernamePasswordToken($user, null, $providerKey, $user->getRoles());
-
             $this->request->getSession()->set('_security_'.$providerKey, serialize($token));
         }
-
-        $this->request->getSession()->save();
     }
 
     /**
-     * @param \Ekino\Bundle\DrupalBundle\Event\DrupalEvent $event
-     * @return void
+     * @param DrupalEvent $event
      */
     public function onLogout(DrupalEvent $event)
     {

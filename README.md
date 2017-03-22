@@ -1,5 +1,5 @@
-Drupal Bundle by Ekino
-======================
+Drupal 7 Bundle by Ekino
+========================
 
 [![Build Status](https://secure.travis-ci.org/ekino/EkinoDrupalBundle.png?branch=master)](http://travis-ci.org/ekino/EkinoDrupalBundle)
 

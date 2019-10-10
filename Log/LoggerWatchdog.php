@@ -11,7 +11,7 @@
 
 namespace Ekino\Bundle\DrupalBundle\Log;
 
-use Symfony\Component\HttpKernel\Log\LoggerInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * LoggerWatchdog.

@@ -27,8 +27,8 @@ class UserRegistrationHookListenerTest extends \PHPUnit_Framework_TestCase
     public function testOnLoginThrowsException()
     {
         $logger   = $this->getMock('Psr\Log\LoggerInterface');
-        $request  = $this->getMock('Symfony\Component\HttpFoundation\Request');
-        $listener = new UserRegistrationHookListener($logger, $request, array());
+        $requestStack  = $this->getMock('Symfony\Component\HttpFoundation\RequestStack');
+        $listener = new UserRegistrationHookListener($logger, $requestStack, array());
 
         $event = $this->getMock('Ekino\Bundle\DrupalBundle\Event\DrupalEvent');
         $event->expects($this->once())->method('getParameter')->with($this->equalTo(1))->willReturn(null);
@@ -47,13 +47,16 @@ class UserRegistrationHookListenerTest extends \PHPUnit_Framework_TestCase
         $request = $this->getMock('Symfony\Component\HttpFoundation\Request');
         $request->expects($this->exactly(3))->method('getSession')->willReturn($session);
 
+        $requestStack = $this->getMock('Symfony\Component\HttpFoundation\RequestStack');
+        $requestStack->expects($this->once())->method('getMasterRequest')->willReturn($request);
+
         $user = $this->getMock('Symfony\Component\Security\Core\User\UserInterface');
         $user->expects($this->any())->method('getRoles')->willReturn(array('ROLE_USER'));
 
         $event = $this->getMock('Ekino\Bundle\DrupalBundle\Event\DrupalEvent');
         $event->expects($this->once())->method('getParameter')->with($this->equalTo(1))->willReturn($user);
 
-        $listener = new UserRegistrationHookListener($logger, $request, array('1', '2', '3'));
+        $listener = new UserRegistrationHookListener($logger, $requestStack, array('1', '2', '3'));
         $listener->onLogin($event);
     }
 
@@ -67,12 +70,15 @@ class UserRegistrationHookListenerTest extends \PHPUnit_Framework_TestCase
         $request = $this->getMock('Symfony\Component\HttpFoundation\Request');
         $request->expects($this->never())->method('getSession');
 
+        $requestStack = $this->getMock('Symfony\Component\HttpFoundation\RequestStack');
+        $requestStack->expects($this->once())->method('getMasterRequest')->willReturn($request);
+
         $user = $this->getMock('Symfony\Component\Security\Core\User\UserInterface');
 
         $event = $this->getMock('Ekino\Bundle\DrupalBundle\Event\DrupalEvent');
         $event->expects($this->once())->method('getParameter')->with($this->equalTo(1))->willReturn($user);
 
-        $listener = new UserRegistrationHookListener($logger, $request, array());
+        $listener = new UserRegistrationHookListener($logger, $requestStack, array());
         $listener->onLogin($event);
     }
 }

@@ -19,4 +19,12 @@ class User extends HybridUser
     {
         return $this->uid;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setSalt($salt)
+    {
+        $this->salt = $salt;
+    }
 }

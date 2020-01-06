@@ -11,12 +11,10 @@
 
 namespace Ekino\Bundle\DrupalBundle\Entity;
 
-use Symfony\Component\Security\Core\User\UserInterface as SecurityUserInterface;
 use FOS\UserBundle\Model\UserInterface as FOSUserInterface;
 
 /**
- * This class provide convenient proxies methods between FosUser class and a DrupalUser class
- *
+ * This class provide convenient proxies methods between FosUser class and a DrupalUser class.
  */
 abstract class HybridUser extends FosUser
 {

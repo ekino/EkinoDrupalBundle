@@ -13,7 +13,7 @@ namespace Ekino\Bundle\DrupalBundle\Event\Listener;
 
 use Ekino\Bundle\DrupalBundle\Event\DrupalEvent;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -30,9 +30,9 @@ class UserRegistrationHookListener
     protected $logger;
 
     /**
-     * @var Request
+     * @var RequestStack
      */
-    protected $request;
+    protected $requestStack;
 
     /**
      * @var array
@@ -41,13 +41,13 @@ class UserRegistrationHookListener
 
     /**
      * @param LoggerInterface $logger
-     * @param Request         $request
+     * @param RequestStack    $requestStack
      * @param array           $providerKeys
      */
-    public function __construct(LoggerInterface $logger, Request $request, array $providerKeys)
+    public function __construct(LoggerInterface $logger, RequestStack $requestStack, array $providerKeys)
     {
         $this->logger       = $logger;
-        $this->request      = $request;
+        $this->requestStack = $requestStack;
         $this->providerKeys = $providerKeys;
     }
 
@@ -64,12 +64,14 @@ class UserRegistrationHookListener
             throw new \RuntimeException('An instance of UserInterface is expected');
         }
 
+        $request = $this->requestStack->getMasterRequest();
+
         // The ContextListener from the Security component is hijacked to insert a valid token into session
         // so next time the user go to a valid symfony2 url with a proper security context, then the following token
         // will be used
         foreach ($this->providerKeys as $providerKey) {
             $token = new UsernamePasswordToken($user, null, $providerKey, $user->getRoles());
-            $this->request->getSession()->set('_security_'.$providerKey, serialize($token));
+            $request->getSession()->set('_security_'.$providerKey, serialize($token));
         }
     }
 
@@ -78,8 +80,10 @@ class UserRegistrationHookListener
      */
     public function onLogout(DrupalEvent $event)
     {
+        $request = $this->requestStack->getMasterRequest();
+
         foreach ($this->providerKeys as $providerKey) {
-            $this->request->getSession()->set('_security_'.$providerKey, null);
+            $request->getSession()->set('_security_'.$providerKey, null);
         }
     }
 }

@@ -14,11 +14,8 @@ namespace Ekino\Bundle\DrupalBundle\DependencyInjection;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
-use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\Config\FileLocator;
-use Symfony\Component\Config\Resource\FileResource;
-use Symfony\Component\Finder\Finder;
 use Symfony\Component\Config\Definition\Processor;
 
 /**

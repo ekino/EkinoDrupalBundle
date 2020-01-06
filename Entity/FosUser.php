@@ -607,9 +607,9 @@ abstract class FosUser extends DrupalUser implements SecurityUserInterface, FOSU
     /**
      * Sets the last login time
      *
-     * @param \DateTime $time
+     * @param \DateTime|null $time
      */
-    public function setLastLogin(\DateTime $time)
+    public function setLastLogin(\DateTime $time = null)
     {
         $this->lastLogin = $time;
     }

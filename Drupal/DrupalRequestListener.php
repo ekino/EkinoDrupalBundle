@@ -13,7 +13,6 @@ namespace Ekino\Bundle\DrupalBundle\Drupal;
 
 use Ekino\Bundle\DrupalBundle\Delivery\DeliveryStrategyInterface;
 
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 
